@@ -13,6 +13,7 @@
 		7150785C1CF82A50003E4796 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7150785A1CF82A50003E4796 /* Main.storyboard */; };
 		7150785E1CF82A50003E4796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7150785D1CF82A50003E4796 /* Assets.xcassets */; };
 		715078611CF82A50003E4796 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7150785F1CF82A50003E4796 /* LaunchScreen.storyboard */; };
+		7150786A1CF82ABD003E4796 /* DrawingBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 715078691CF82ABD003E4796 /* DrawingBoardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		7150785D1CF82A50003E4796 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		715078601CF82A50003E4796 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		715078621CF82A50003E4796 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		715078681CF82ABD003E4796 /* DrawingBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawingBoardView.h; sourceTree = "<group>"; };
+		715078691CF82ABD003E4796 /* DrawingBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawingBoardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				7150785F1CF82A50003E4796 /* LaunchScreen.storyboard */,
 				715078621CF82A50003E4796 /* Info.plist */,
 				715078511CF82A50003E4796 /* Supporting Files */,
+				715078681CF82ABD003E4796 /* DrawingBoardView.h */,
+				715078691CF82ABD003E4796 /* DrawingBoardView.m */,
 			);
 			path = Quartz2D_Demo;
 			sourceTree = "<group>";
@@ -110,6 +115,7 @@
 				TargetAttributes = {
 					7150784D1CF82A50003E4796 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = WWN3ZC5QF3;
 					};
 				};
 			};
@@ -150,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				715078591CF82A50003E4796 /* ViewController.m in Sources */,
+				7150786A1CF82ABD003E4796 /* DrawingBoardView.m in Sources */,
 				715078561CF82A50003E4796 /* AppDelegate.m in Sources */,
 				715078531CF82A50003E4796 /* main.m in Sources */,
 			);
@@ -265,10 +272,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Quartz2D_Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ole.Quartz2D-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -276,10 +286,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Quartz2D_Demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ole.Quartz2D-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

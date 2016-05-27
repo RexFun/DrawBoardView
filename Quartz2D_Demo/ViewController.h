@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DrawingBoardView.h"
 
 @interface ViewController : UIViewController
 
+@property (nonatomic,strong)DrawingBoardView *drawboard;
+@property (nonatomic,strong)UIButton *btn_clear;
 
 @end
 
