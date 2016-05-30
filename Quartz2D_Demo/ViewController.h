@@ -12,6 +12,9 @@
 @interface ViewController : UIViewController
 
 @property (nonatomic,strong)DrawBoard *drawboard;
+@property (nonatomic,strong)UIButton *btn_line;
+@property (nonatomic,strong)UIButton *btn_circular;
+@property (nonatomic,strong)UIButton *btn_rectangle;
 @property (nonatomic,strong)UIButton *btn_clear;
 @property (nonatomic,strong)UIButton *btn_back;
 

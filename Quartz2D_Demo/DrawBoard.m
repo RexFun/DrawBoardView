@@ -8,6 +8,14 @@
 
 #import "DrawBoard.h"
 
+@implementation DGCircular
+
+@end
+
+@implementation DGRectangle
+
+@end
+
 @implementation DrawBoard
 
 - (NSMutableArray *)paths
@@ -16,6 +24,27 @@
         _paths = [NSMutableArray array];
     }
     return _paths;
+}
+- (NSMutableArray *)circulars
+{
+    if (_circulars == nil) {
+        _circulars = [NSMutableArray array];
+    }
+    return _circulars;
+}
+- (NSMutableArray *)rectangles
+{
+    if (_rectangles == nil) {
+        _rectangles = [NSMutableArray array];
+    }
+    return _rectangles;
+}
+- (NSMutableArray *)graphs
+{
+    if (_graphs == nil) {
+        _graphs = [NSMutableArray array];
+    }
+    return _graphs;
 }
 
 - (id)init
@@ -27,43 +56,27 @@
     return self;
 }
 
-// 开始触摸
+// 触摸-开始
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // 1.获取手指对应UITouch对象
-    UITouch *touch = [touches anyObject];
-    // 2.通过UITouch对象获取手指触摸的位置
-    CGPoint startPoint = [touch locationInView:touch.view];
-    
-    // 3.当用户手指按下的时候创建一条路径
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    // 3.1设置路径的相关属性
-    [path setLineJoinStyle:kCGLineJoinRound];
-    [path setLineCapStyle:kCGLineCapRound];
-    [path setLineWidth:10];
-    
-    // 4.设置当前路径的起点
-    [path moveToPoint:startPoint];
-    // 5.将路径添加到数组中
-    [self.paths addObject:path];
-    // 6.调用drawRect方法重回视图
-    [self setNeedsDisplay];
-    
+    switch (_drawType)
+    {
+        case T_LINE:[self touchesBeganLine:touches withEvent:event];break;
+        case T_CIRCULAR:[self touchesBeganCircular:touches withEvent:event];break;
+        case T_RECT:[self touchesBeganRectangle:touches withEvent:event];break;
+        default:break;
+    }
 }
-// 移动
+// 触摸-移动
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // 1.获取手指对应UITouch对象
-    UITouch *touch = [touches anyObject];
-    // 2.通过UITouch对象获取手指触摸的位置
-    CGPoint movePoint = [touch locationInView:touch.view];
-    // 3.取出当前的path
-    UIBezierPath *currentPaht = [self.paths lastObject];
-    // 4.设置当前路径的终点
-    [currentPaht addLineToPoint:movePoint];
-    // 5.调用drawRect方法重回视图
-    [self setNeedsDisplay];
-    
+    switch (_drawType)
+    {
+        case T_LINE:[self touchesMovedLine:touches withEvent:event];break;
+        case T_CIRCULAR:[self touchesMovedCircular:touches withEvent:event];break;
+        case T_RECT:[self touchesMovedRectangle:touches withEvent:event];break;
+        default:break;
+    }
 }
 
 // 离开view(停止触摸)
@@ -72,33 +85,174 @@
     [self touchesMoved:touches withEvent:event];
 }
 
-// 画线
+// 重绘
 - (void)drawRect:(CGRect)rect
 {
-    NSLog(@"in drawRect func...%lu",(unsigned long)self.paths.count);
-    // 边路数组绘制所有的线段
-    for (UIBezierPath *path in self.paths) {
-        [[UIColor redColor] set];
-        [path stroke];
+    // 颜色
+    [[UIColor redColor] set];
+    for (id obj in self.graphs)
+    {
+        if([obj isMemberOfClass:[UIBezierPath class]])
+        {
+            [self drawLine:(UIBezierPath *)obj];
+        }
+        else if([obj isMemberOfClass:[DGCircular class]])
+        {
+            [self drawCircular:(DGCircular *)obj];
+            
+        }
+        else if([obj isMemberOfClass:[DGRectangle class]])
+        {
+            [self drawRectangle:(DGRectangle *)obj];
+        }
     }
+    
 }
 
+// 画线-触摸-开始
+- (void)touchesBeganLine:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint startPoint = [touch locationInView:touch.view];
+    // 3.当用户手指按下的时候创建一条路径
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    // 3.1设置路径的相关属性
+    [path setLineJoinStyle:kCGLineJoinRound];
+    [path setLineCapStyle:kCGLineCapRound];
+    [path setLineWidth:10];
+    // 4.设置当前路径的起点
+    [path moveToPoint:startPoint];
+    // 5.将路径添加到数组中
+    [self.paths addObject:path];
+    // 6.调用drawRect方法重回视图
+    [self setNeedsDisplay];
+    // 7.将路径添加到图形数组中
+    [self.graphs addObject:path];
+}
+
+// 画线-触摸-移动
+- (void)touchesMovedLine:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint movePoint = [touch locationInView:touch.view];
+    // 3.取出当前的path
+    UIBezierPath *currentPath = [self.paths lastObject];
+    // 4.设置当前路径的终点
+    [currentPath addLineToPoint:movePoint];
+    // 5.调用drawRect方法重回视图
+    [self setNeedsDisplay];
+}
+
+// 画圆-触摸-开始
+- (void)touchesBeganCircular:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint startPoint = [touch locationInView:touch.view];
+    // 3.获取原点坐标
+    _circular = [[DGCircular alloc]init];
+    _circular.x = startPoint.x;
+    _circular.y = startPoint.y;
+    [self.circulars addObject:_circular];
+    // 4.将圆对象添加到图形数组中
+    [self.graphs addObject:_circular];
+}
+
+// 画圆-触摸-移动
+- (void)touchesMovedCircular:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint movePoint = [touch locationInView:touch.view];
+    // 3.计算半径
+    _circular.r = sqrt(pow((movePoint.x-_circular.x),2)+pow((movePoint.y-_circular.y),2));
+    // 4.重绘
+    [self setNeedsDisplay];
+}
+
+// 画矩形-触摸-开始
+- (void)touchesBeganRectangle:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint startPoint = [touch locationInView:touch.view];
+    // 3.获取原点坐标
+    _rectangle = [[DGRectangle alloc]init];
+    _rectangle.x = startPoint.x;
+    _rectangle.y = startPoint.y;
+    [self.rectangles addObject:_rectangle];
+    // 4.将矩形对象添加到图形数组中
+    [self.graphs addObject:_rectangle];
+}
+
+// 画矩形-触摸-移动
+- (void)touchesMovedRectangle:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint movePoint = [touch locationInView:touch.view];
+    // 3.计算宽高
+    _rectangle.w = movePoint.x - _rectangle.x;
+    _rectangle.h = movePoint.y - _rectangle.y;
+    // 4.重绘
+    [self setNeedsDisplay];
+}
+
+// 重绘-画线
+- (void)drawLine:(UIBezierPath *)p
+{
+    [p stroke];
+}
+
+// 重绘-画圆
+- (void)drawCircular:(DGCircular *)c
+{
+    // 获取上下文
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    // 1.画圆
+    CGContextAddEllipseInRect(ctx, CGRectMake(c.x, c.y, c.r, c.r));
+    // 2.渲染
+    CGContextStrokePath(ctx);
+}
+
+// 重绘-画矩形
+- (void)drawRectangle:(DGRectangle *)r
+{
+    // 1.获取上下文
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    // 2.绘制四边形
+    CGContextAddRect(ctx, CGRectMake(r.x, r.y, r.w, r.h));
+    // 3.渲染
+    CGContextStrokePath(ctx);
+}
+
+// 清屏
 - (void)clear
 {
-    NSLog(@"begin clearScreen...");
-    [self.paths removeAllObjects];
+    [_paths removeAllObjects];
+    [_circulars removeAllObjects];
+    [_rectangles removeAllObjects];
+    [_graphs removeAllObjects];
     [self setNeedsDisplay];
-    NSLog(@"end clearScreen...");
 }
 
+// 撤销
 - (void)back
 {
-    [self.paths removeLastObject];
+    [_paths removeLastObject];
+    [_circulars removeLastObject];
+    [_rectangles removeLastObject];
+    [_graphs removeLastObject];
     [self setNeedsDisplay];
 }
-
-
-
 
 //- (void)drawRect:(CGRect)rect {
 ////    [self drawLine];
