@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DrawingBoardView : UIView
+@interface DrawBoard : UIView
 @property (nonatomic,strong)NSMutableArray *paths;
 
--(void)clearScreen;
+-(void)clear;
+-(void)back;
 @end

@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DrawingBoardView.h"
+#import "DrawBoard.h"
 
 @interface ViewController : UIViewController
 
-@property (nonatomic,strong)DrawingBoardView *drawboard;
+@property (nonatomic,strong)DrawBoard *drawboard;
 @property (nonatomic,strong)UIButton *btn_clear;
+@property (nonatomic,strong)UIButton *btn_back;
 
 @end
 

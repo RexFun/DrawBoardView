@@ -6,9 +6,9 @@
 //  Copyright © 2016年 ole. All rights reserved.
 //
 
-#import "DrawingBoardView.h"
+#import "DrawBoard.h"
 
-@implementation DrawingBoardView
+@implementation DrawBoard
 
 - (NSMutableArray *)paths
 {
@@ -16,6 +16,15 @@
         _paths = [NSMutableArray array];
     }
     return _paths;
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [self setBackgroundColor:[UIColor blackColor]];
+    }
+    return self;
 }
 
 // 开始触摸
@@ -33,11 +42,13 @@
     [path setLineCapStyle:kCGLineCapRound];
     [path setLineWidth:10];
     
-    
     // 4.设置当前路径的起点
     [path moveToPoint:startPoint];
     // 5.将路径添加到数组中
     [self.paths addObject:path];
+    // 6.调用drawRect方法重回视图
+    [self setNeedsDisplay];
+    
 }
 // 移动
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -46,13 +57,11 @@
     UITouch *touch = [touches anyObject];
     // 2.通过UITouch对象获取手指触摸的位置
     CGPoint movePoint = [touch locationInView:touch.view];
-    
     // 3.取出当前的path
     UIBezierPath *currentPaht = [self.paths lastObject];
     // 4.设置当前路径的终点
     [currentPaht addLineToPoint:movePoint];
-    
-    // 6.调用drawRect方法重回视图
+    // 5.调用drawRect方法重回视图
     [self setNeedsDisplay];
     
 }
@@ -61,51 +70,32 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self touchesMoved:touches withEvent:event];
-    /*
-     // 1.获取手指对应UITouch对象
-     UITouch *touch = [touches anyObject];
-     // 2.通过UITouch对象获取手指触摸的位置
-     CGPoint endPoint = [touch locationInView:touch.view];
-     
-     // 3.取出当前的path
-     UIBezierPath *currentPaht = [self.paths lastObject];
-     // 4.设置当前路径的终点
-     [currentPaht addLineToPoint:endPoint];
-     
-     // 6.调用drawRect方法重回视图
-     [self setNeedsDisplay];
-     */
 }
 
 // 画线
 - (void)drawRect:(CGRect)rect
 {
-    [[UIColor redColor] set];
+    NSLog(@"in drawRect func...%lu",(unsigned long)self.paths.count);
     // 边路数组绘制所有的线段
     for (UIBezierPath *path in self.paths) {
+        [[UIColor redColor] set];
         [path stroke];
     }
 }
 
-
-- (void)clearScreen
+- (void)clear
 {
+    NSLog(@"begin clearScreen...");
     [self.paths removeAllObjects];
     [self setNeedsDisplay];
+    NSLog(@"end clearScreen...");
 }
 
-- (void)backScreen
+- (void)back
 {
     [self.paths removeLastObject];
     [self setNeedsDisplay];
 }
-
-
-
-
-
-
-
 
 
 
