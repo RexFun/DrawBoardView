@@ -19,6 +19,42 @@
     
     
     // top-bar
+    // 按钮-画笔
+    self.btn_pen = [[UIButton alloc] init];
+    [self.btn_pen setTitle:@"画笔" forState:UIControlStateNormal];
+    [self.btn_pen setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.btn_pen addTarget:self action:@selector(drawPenTap) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.btn_pen];
+    
+    self.btn_pen.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_pen
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:0
+                                                           constant:60]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_pen
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:0
+                                                           constant:40]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_pen
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:0.5
+                                                           constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_pen
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeTopMargin
+                                                         multiplier:1
+                                                           constant:20]];
     // 按钮-直线
     self.btn_line = [[UIButton alloc] init];
     [self.btn_line setTitle:@"直线" forState:UIControlStateNormal];
@@ -44,17 +80,17 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_line
                                                           attribute:NSLayoutAttributeLeft
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:0.5
+                                                             toItem:self.btn_pen
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1
                                                            constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_line
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTopMargin
+                                                             toItem:self.btn_pen
+                                                          attribute:NSLayoutAttributeTop
                                                          multiplier:1
-                                                           constant:20]];
+                                                           constant:0]];
     // 按钮-圆形
     self.btn_circular = [[UIButton alloc] init];
     [self.btn_circular setTitle:@"圆形" forState:UIControlStateNormal];
@@ -87,7 +123,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_circular
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.btn_line
+                                                             toItem:self.btn_pen
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1
                                                            constant:0]];
@@ -123,7 +159,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.btn_rectangle
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.btn_line
+                                                             toItem:self.btn_pen
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1
                                                            constant:0]];
@@ -232,7 +268,7 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.drawboard
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.btn_line
+                                                             toItem:self.btn_pen
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1
                                                            constant:0]];
@@ -242,6 +278,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) drawPenTap
+{
+    self.drawboard.drawType = T_PEN;
 }
 
 - (void) drawLineTap

@@ -8,12 +8,13 @@
 
 #import "DrawBoard.h"
 
-@implementation DGCircular
+@implementation DGLine
+@end
 
+@implementation DGCircular
 @end
 
 @implementation DGRectangle
-
 @end
 
 @implementation DrawBoard
@@ -24,6 +25,13 @@
         _paths = [NSMutableArray array];
     }
     return _paths;
+}
+- (NSMutableArray *)lines
+{
+    if (_lines == nil) {
+        _lines = [NSMutableArray array];
+    }
+    return _lines;
 }
 - (NSMutableArray *)circulars
 {
@@ -61,6 +69,7 @@
 {
     switch (_drawType)
     {
+        case T_PEN:[self touchesBeganPen:touches withEvent:event];break;
         case T_LINE:[self touchesBeganLine:touches withEvent:event];break;
         case T_CIRCULAR:[self touchesBeganCircular:touches withEvent:event];break;
         case T_RECT:[self touchesBeganRectangle:touches withEvent:event];break;
@@ -72,6 +81,7 @@
 {
     switch (_drawType)
     {
+        case T_PEN:[self touchesMovedPen:touches withEvent:event];break;
         case T_LINE:[self touchesMovedLine:touches withEvent:event];break;
         case T_CIRCULAR:[self touchesMovedCircular:touches withEvent:event];break;
         case T_RECT:[self touchesMovedRectangle:touches withEvent:event];break;
@@ -88,13 +98,31 @@
 // 重绘
 - (void)drawRect:(CGRect)rect
 {
+    // 获取上下文
+    _ctx = UIGraphicsGetCurrentContext();
+    
+    // 设置绘图状态
+    // 设置线条颜色 红色
+    CGContextSetRGBStrokeColor(_ctx, 1.0, 0, 0, 1.0);
+    // 设置线条宽度
+    CGContextSetLineWidth(_ctx, 10);
+    // 设置线条的起点和终点的样式
+    CGContextSetLineCap(_ctx, kCGLineCapRound);
+    // 设置线条的转角的样式
+    CGContextSetLineJoin(_ctx, kCGLineJoinRound);
+    
     // 颜色
     [[UIColor redColor] set];
     for (id obj in self.graphs)
     {
         if([obj isMemberOfClass:[UIBezierPath class]])
         {
-            [self drawLine:(UIBezierPath *)obj];
+            [self drawPen:(UIBezierPath *)obj];
+        }
+        else if([obj isMemberOfClass:[DGLine class]])
+        {
+            [self drawLine:(DGLine *)obj];
+            
         }
         else if([obj isMemberOfClass:[DGCircular class]])
         {
@@ -109,8 +137,8 @@
     
 }
 
-// 画线-触摸-开始
-- (void)touchesBeganLine:(NSSet *)touches withEvent:(UIEvent *)event
+// 画笔-触摸-开始
+- (void)touchesBeganPen:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
     UITouch *touch = [touches anyObject];
@@ -132,8 +160,8 @@
     [self.graphs addObject:path];
 }
 
-// 画线-触摸-移动
-- (void)touchesMovedLine:(NSSet *)touches withEvent:(UIEvent *)event
+// 画笔-触摸-移动
+- (void)touchesMovedPen:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
     UITouch *touch = [touches anyObject];
@@ -144,6 +172,36 @@
     // 4.设置当前路径的终点
     [currentPath addLineToPoint:movePoint];
     // 5.调用drawRect方法重回视图
+    [self setNeedsDisplay];
+}
+
+// 画直线-触摸-开始
+- (void)touchesBeganLine:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint startPoint = [touch locationInView:touch.view];
+    // 3.获取起点坐标
+    _line = [[DGLine alloc]init];
+    _line.begin_x = startPoint.x;
+    _line.begin_y = startPoint.y;
+    [self.lines addObject:_line];
+    // 4.将直线对象添加到图形数组中
+    [self.graphs addObject:_line];
+}
+
+// 画直线-触摸-移动
+- (void)touchesMovedLine:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // 1.获取手指对应UITouch对象
+    UITouch *touch = [touches anyObject];
+    // 2.通过UITouch对象获取手指触摸的位置
+    CGPoint movePoint = [touch locationInView:touch.view];
+    // 3.计算终点坐标
+    _line.end_x = movePoint.x;
+    _line.end_y = movePoint.y;
+    // 4.重绘
     [self setNeedsDisplay];
 }
 
@@ -170,8 +228,9 @@
     UITouch *touch = [touches anyObject];
     // 2.通过UITouch对象获取手指触摸的位置
     CGPoint movePoint = [touch locationInView:touch.view];
-    // 3.计算半径
-    _circular.r = sqrt(pow((movePoint.x-_circular.x),2)+pow((movePoint.y-_circular.y),2));
+    // 3.计算宽高
+    _circular.w = movePoint.x - _circular.x;
+    _circular.h = movePoint.y - _circular.y;
     // 4.重绘
     [self setNeedsDisplay];
 }
@@ -206,38 +265,45 @@
     [self setNeedsDisplay];
 }
 
-// 重绘-画线
-- (void)drawLine:(UIBezierPath *)p
+// 重绘-画笔
+- (void)drawPen:(UIBezierPath *)p
 {
     [p stroke];
+}
+
+// 重绘-画直线
+- (void)drawLine:(DGLine *)l
+{
+    // 1.设置起点、终点
+    CGContextMoveToPoint(_ctx, l.begin_x, l.begin_y);
+    CGContextAddLineToPoint(_ctx, l.end_x, l.end_y);
+    // 2.渲染
+    CGContextStrokePath(_ctx);
 }
 
 // 重绘-画圆
 - (void)drawCircular:(DGCircular *)c
 {
-    // 获取上下文
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
     // 1.画圆
-    CGContextAddEllipseInRect(ctx, CGRectMake(c.x, c.y, c.r, c.r));
+    CGContextAddEllipseInRect(_ctx, CGRectMake(c.x, c.y, c.w, c.h));
     // 2.渲染
-    CGContextStrokePath(ctx);
+    CGContextStrokePath(_ctx);
 }
 
 // 重绘-画矩形
 - (void)drawRectangle:(DGRectangle *)r
 {
-    // 1.获取上下文
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    // 2.绘制四边形
-    CGContextAddRect(ctx, CGRectMake(r.x, r.y, r.w, r.h));
-    // 3.渲染
-    CGContextStrokePath(ctx);
+    // 1.绘制四边形
+    CGContextAddRect(_ctx, CGRectMake(r.x, r.y, r.w, r.h));
+    // 2.渲染
+    CGContextStrokePath(_ctx);
 }
 
 // 清屏
 - (void)clear
 {
     [_paths removeAllObjects];
+    [_lines removeAllObjects];
     [_circulars removeAllObjects];
     [_rectangles removeAllObjects];
     [_graphs removeAllObjects];
@@ -248,6 +314,7 @@
 - (void)back
 {
     [_paths removeLastObject];
+    [_lines removeLastObject];
     [_circulars removeLastObject];
     [_rectangles removeLastObject];
     [_graphs removeLastObject];
