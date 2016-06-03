@@ -54,6 +54,9 @@ typedef NS_ENUM(uint, DrawType)
 @property DGCircular* circular;                         //圆形对象
 @property DGRectangle* rectangle;                       //矩形对象
 
+
+
+
 -(void)clear;
 -(void)back;
 @end

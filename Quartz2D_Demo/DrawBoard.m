@@ -59,7 +59,9 @@
 {
     self = [super init];
     if (self) {
-        [self setBackgroundColor:[UIColor blackColor]];
+        
+        [self setBackgroundColor:[UIColor whiteColor]];
+        
     }
     return self;
 }
@@ -320,6 +322,8 @@
     [_graphs removeLastObject];
     [self setNeedsDisplay];
 }
+
+
 
 //- (void)drawRect:(CGRect)rect {
 ////    [self drawLine];
