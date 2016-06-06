@@ -30,8 +30,8 @@
 		715078621CF82A50003E4796 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		715078681CF82ABD003E4796 /* DrawBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoard.h; sourceTree = "<group>"; };
 		715078691CF82ABD003E4796 /* DrawBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
-		71DB8E031D012F1800986CF0 /* DrawBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawBoardView.h; path = ../DrawBoardView.h; sourceTree = "<group>"; };
-		71DB8E041D012F1800986CF0 /* DrawBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DrawBoardView.m; path = ../DrawBoardView.m; sourceTree = "<group>"; };
+		71DB8E031D012F1800986CF0 /* DrawBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoardView.h; sourceTree = "<group>"; };
+		71DB8E041D012F1800986CF0 /* DrawBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

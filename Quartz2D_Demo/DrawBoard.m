@@ -8,6 +8,9 @@
 
 #import "DrawBoard.h"
 
+@implementation DGPen
+@end
+
 @implementation DGLine
 @end
 
@@ -19,12 +22,12 @@
 
 @implementation DrawBoard
 
-- (NSMutableArray *)paths
+- (NSMutableArray *)pens
 {
-    if (_paths == nil) {
-        _paths = [NSMutableArray array];
+    if (_pens == nil) {
+        _pens = [NSMutableArray array];
     }
-    return _paths;
+    return _pens;
 }
 - (NSMutableArray *)lines
 {
@@ -59,9 +62,9 @@
 {
     self = [super init];
     if (self) {
-        
         [self setBackgroundColor:[UIColor whiteColor]];
-        
+        _lineWidth = 3;
+        _strokeColor = [UIColor redColor];
     }
     return self;
 }
@@ -102,24 +105,16 @@
 {
     // 获取上下文
     _ctx = UIGraphicsGetCurrentContext();
-    
-    // 设置绘图状态
-    // 设置线条颜色 红色
-    CGContextSetRGBStrokeColor(_ctx, 1.0, 0, 0, 1.0);
-    // 设置线条宽度
-    CGContextSetLineWidth(_ctx, 10);
     // 设置线条的起点和终点的样式
     CGContextSetLineCap(_ctx, kCGLineCapRound);
     // 设置线条的转角的样式
     CGContextSetLineJoin(_ctx, kCGLineJoinRound);
-    
-    // 颜色
-    [[UIColor redColor] set];
+    // 遍历重绘
     for (id obj in self.graphs)
     {
-        if([obj isMemberOfClass:[UIBezierPath class]])
+        if([obj isMemberOfClass:[DGPen class]])
         {
-            [self drawPen:(UIBezierPath *)obj];
+            [self drawPen:(DGPen *)obj];
         }
         else if([obj isMemberOfClass:[DGLine class]])
         {
@@ -147,19 +142,16 @@
     // 2.通过UITouch对象获取手指触摸的位置
     CGPoint startPoint = [touch locationInView:touch.view];
     // 3.当用户手指按下的时候创建一条路径
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    // 3.1设置路径的相关属性
-    [path setLineJoinStyle:kCGLineJoinRound];
-    [path setLineCapStyle:kCGLineCapRound];
-    [path setLineWidth:10];
+    _pen = [[DGPen alloc]init];
+    _pen.path = [UIBezierPath bezierPath];
     // 4.设置当前路径的起点
-    [path moveToPoint:startPoint];
+    [_pen.path moveToPoint:startPoint];
     // 5.将路径添加到数组中
-    [self.paths addObject:path];
+    [self.pens addObject:_pen];
     // 6.调用drawRect方法重回视图
     [self setNeedsDisplay];
     // 7.将路径添加到图形数组中
-    [self.graphs addObject:path];
+    [self.graphs addObject:_pen];
 }
 
 // 画笔-触摸-移动
@@ -170,9 +162,9 @@
     // 2.通过UITouch对象获取手指触摸的位置
     CGPoint movePoint = [touch locationInView:touch.view];
     // 3.取出当前的path
-    UIBezierPath *currentPath = [self.paths lastObject];
+    DGPen* curPen = [self.pens lastObject];
     // 4.设置当前路径的终点
-    [currentPath addLineToPoint:movePoint];
+    [curPen.path addLineToPoint:movePoint];
     // 5.调用drawRect方法重回视图
     [self setNeedsDisplay];
 }
@@ -268,43 +260,79 @@
 }
 
 // 重绘-画笔
-- (void)drawPen:(UIBezierPath *)p
+- (void)drawPen:(DGPen *)p
 {
-    [p stroke];
+    // 设置对象的线条颜色和宽度
+    if (p.lineWidth == 0)     p.lineWidth   = _lineWidth;
+    if (p.strokeColor == nil) p.strokeColor = _strokeColor;
+    // 设置线条颜色
+    CGContextSetStrokeColorWithColor(_ctx, [p.strokeColor CGColor]);
+    // 设置线条宽度
+    [p.path setLineWidth:p.lineWidth];
+    // 设置线条的起点和终点的样式
+    [p.path setLineCapStyle:kCGLineCapRound];
+    // 设置线条的转角的样式
+    [p.path setLineJoinStyle:kCGLineJoinRound];
+    // 绘制
+    [p.path stroke];
 }
 
 // 重绘-画直线
 - (void)drawLine:(DGLine *)l
 {
+    // 设置对象的线条颜色和宽度
+    if (l.lineWidth == 0)     l.lineWidth   = _lineWidth;
+    if (l.strokeColor == nil) l.strokeColor = _strokeColor;
+    // 设置线条颜色
+    CGContextSetStrokeColorWithColor(_ctx, [l.strokeColor CGColor]);
+    // 设置线条宽度
+    CGContextSetLineWidth(_ctx, l.lineWidth);
+    
     // 1.设置起点、终点
     CGContextMoveToPoint(_ctx, l.begin_x, l.begin_y);
     CGContextAddLineToPoint(_ctx, l.end_x, l.end_y);
-    // 2.渲染
+    // 2.绘制
     CGContextStrokePath(_ctx);
 }
 
 // 重绘-画圆
 - (void)drawCircular:(DGCircular *)c
 {
+    // 设置对象的线条颜色和宽度
+    if (c.lineWidth == 0)     c.lineWidth   = _lineWidth;
+    if (c.strokeColor == nil) c.strokeColor = _strokeColor;
+    // 设置线条颜色
+    CGContextSetStrokeColorWithColor(_ctx, [c.strokeColor CGColor]);
+    // 设置线条宽度
+    CGContextSetLineWidth(_ctx, c.lineWidth);
+    
     // 1.画圆
     CGContextAddEllipseInRect(_ctx, CGRectMake(c.x, c.y, c.w, c.h));
-    // 2.渲染
+    // 2.绘制
     CGContextStrokePath(_ctx);
 }
 
 // 重绘-画矩形
 - (void)drawRectangle:(DGRectangle *)r
 {
+    // 设置对象的线条颜色和宽度
+    if (r.lineWidth == 0)     r.lineWidth   = _lineWidth;
+    if (r.strokeColor == nil) r.strokeColor = _strokeColor;
+    // 设置线条颜色
+    CGContextSetStrokeColorWithColor(_ctx, [r.strokeColor CGColor]);
+    // 设置线条宽度
+    CGContextSetLineWidth(_ctx, r.lineWidth);
+    
     // 1.绘制四边形
     CGContextAddRect(_ctx, CGRectMake(r.x, r.y, r.w, r.h));
-    // 2.渲染
+    // 2.绘制
     CGContextStrokePath(_ctx);
 }
 
 // 清屏
 - (void)clear
 {
-    [_paths removeAllObjects];
+    [_pens removeAllObjects];
     [_lines removeAllObjects];
     [_circulars removeAllObjects];
     [_rectangles removeAllObjects];
@@ -315,7 +343,7 @@
 // 撤销
 - (void)back
 {
-    [_paths removeLastObject];
+    [_pens removeLastObject];
     [_lines removeLastObject];
     [_circulars removeLastObject];
     [_rectangles removeLastObject];

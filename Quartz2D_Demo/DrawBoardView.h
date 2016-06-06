@@ -13,6 +13,7 @@
 
 @property (nonatomic,strong)UIToolbar* tbar;
 @property (nonatomic,strong)UIToolbar* bbar;
+@property (nonatomic,strong)UIToolbar* abar;
 @property (nonatomic,strong)DrawBoard* drawBoard;
 
 @end
