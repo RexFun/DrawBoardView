@@ -14,6 +14,7 @@
 		7150785E1CF82A50003E4796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7150785D1CF82A50003E4796 /* Assets.xcassets */; };
 		715078611CF82A50003E4796 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7150785F1CF82A50003E4796 /* LaunchScreen.storyboard */; };
 		7150786A1CF82ABD003E4796 /* DrawBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 715078691CF82ABD003E4796 /* DrawBoard.m */; };
+		71AD32FC1D065902003C5985 /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71AD32FB1D065901003C5985 /* PopView.m */; };
 		71DB8E051D012F1800986CF0 /* DrawBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71DB8E041D012F1800986CF0 /* DrawBoardView.m */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,8 @@
 		715078621CF82A50003E4796 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		715078681CF82ABD003E4796 /* DrawBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoard.h; sourceTree = "<group>"; };
 		715078691CF82ABD003E4796 /* DrawBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
+		71AD32FA1D065901003C5985 /* PopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopView.h; sourceTree = "<group>"; };
+		71AD32FB1D065901003C5985 /* PopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopView.m; sourceTree = "<group>"; };
 		71DB8E031D012F1800986CF0 /* DrawBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoardView.h; sourceTree = "<group>"; };
 		71DB8E041D012F1800986CF0 /* DrawBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,6 +80,8 @@
 				715078691CF82ABD003E4796 /* DrawBoard.m */,
 				71DB8E031D012F1800986CF0 /* DrawBoardView.h */,
 				71DB8E041D012F1800986CF0 /* DrawBoardView.m */,
+				71AD32FA1D065901003C5985 /* PopView.h */,
+				71AD32FB1D065901003C5985 /* PopView.m */,
 			);
 			path = Quartz2D_Demo;
 			sourceTree = "<group>";
@@ -160,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71AD32FC1D065902003C5985 /* PopView.m in Sources */,
 				715078591CF82A50003E4796 /* ViewController.m in Sources */,
 				7150786A1CF82ABD003E4796 /* DrawBoard.m in Sources */,
 				715078561CF82A50003E4796 /* AppDelegate.m in Sources */,

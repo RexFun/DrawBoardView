@@ -85,71 +85,6 @@
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1
                                                       constant:30]];
-    // abar
-    NSMutableArray *abarItems = [NSMutableArray array];
-    [abarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"细"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(tinyLineTap)]];
-    [abarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"中"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(midLineTap)]];
-    [abarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"粗"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(thickLineTap)]];
-    [abarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"红"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(redColorTap)]];
-    [abarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"蓝"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(blueColorTap)]];
-    [abarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"绿"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(greenColorTap)]];
-    _abar = [[UIToolbar alloc] init];
-    [_abar setItems:abarItems animated:YES];
-    [self addSubview:_abar];
-    
-    _abar.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_abar
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeWidth
-                                                    multiplier:1
-                                                      constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_abar
-                                                     attribute:NSLayoutAttributeHeight
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeHeight
-                                                    multiplier:0
-                                                      constant:35]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_abar
-                                                     attribute:NSLayoutAttributeLeft
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeLeft
-                                                    multiplier:1
-                                                      constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_abar
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_tbar
-                                                     attribute:NSLayoutAttributeBottom
-                                                    multiplier:1
-                                                      constant:0]];
     
     // bbar
     NSMutableArray *bbarItems = [NSMutableArray array];
@@ -220,7 +155,7 @@
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_drawBoard
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:_abar
+                                                        toItem:_tbar
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1
                                                       constant:0]];
@@ -231,51 +166,55 @@
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1
                                                       constant:0]];
+    // popView
+    _popView = [[PopView alloc]init];
+    _popView.delegate = self;
+    [self addSubview:_popView];
+    _popView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_popView
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_popView
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:1
+                                                      constant:0]];
 }
 
 - (void) drawPenTap
 {
     _drawBoard.drawType = T_PEN;
+    [_popView show];
 }
 
 - (void) drawLineTap
 {
     _drawBoard.drawType = T_LINE;
+    [_popView show];
 }
 
 - (void) drawCircularTap
 {
     _drawBoard.drawType = T_CIRCULAR;
+    [_popView show];
 }
 
 - (void) drawRectangleTap
 {
     _drawBoard.drawType = T_RECT;
+    [_popView show];
 }
 
-- (void) tinyLineTap
+- (void)getSelectedItems:(NSDictionary *)items
 {
-    _drawBoard.lineWidth = 3;
-}
-- (void) midLineTap
-{
-    _drawBoard.lineWidth = 6;
-}
-- (void) thickLineTap
-{
-    _drawBoard.lineWidth = 9;
-}
-- (void) redColorTap
-{
-    _drawBoard.strokeColor = [UIColor redColor];
-}
-- (void) blueColorTap
-{
-    _drawBoard.strokeColor = [UIColor blueColor];
-}
-- (void) greenColorTap
-{
-    _drawBoard.strokeColor = [UIColor greenColor];
+    _drawBoard.lineWidth = [[items objectForKey:@"lineWidth"] floatValue];
+    _drawBoard.strokeColor = [items objectForKey:@"strokeColor"];
 }
 
 - (void) clearTap

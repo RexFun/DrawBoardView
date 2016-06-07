@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "DrawBoard.h"
+#import "PopView.h"
 
-@interface DrawBoardView : UIView
+@interface DrawBoardView : UIView<PopViewDelegate>
 
 @property (nonatomic,strong)UIToolbar* tbar;
 @property (nonatomic,strong)UIToolbar* bbar;
-@property (nonatomic,strong)UIToolbar* abar;
 @property (nonatomic,strong)DrawBoard* drawBoard;
+@property (nonatomic,strong)PopView* popView;
 
 @end
