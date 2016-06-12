@@ -72,6 +72,7 @@ NSDictionary* penAttPickerResult;
                    [NSDictionary dictionaryWithObjectsAndKeys:@"细",@"title",@"3",@"val",nil],
                    [NSDictionary dictionaryWithObjectsAndKeys:@"中",@"title",@"6",@"val",nil],
                    [NSDictionary dictionaryWithObjectsAndKeys:@"粗",@"title",@"9",@"val",nil], nil];
+    
     _strokeColors = [NSArray arrayWithObjects:
                      [NSDictionary dictionaryWithObjectsAndKeys:@"红",@"title",[UIColor redColor],@"val",nil],
                      [NSDictionary dictionaryWithObjectsAndKeys:@"绿",@"title",[UIColor greenColor],@"val",nil],
@@ -407,17 +408,23 @@ NSDictionary* penAttPickerResult;
     return pickerView.bounds.size.width/2 - 5;
 }
 
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
     UILabel* pickerLabel = (UILabel*)view;
     if (!pickerLabel){
         pickerLabel = [[UILabel alloc] init];
-        // Setup label properties - frame, font, colors etc
-        //adjustsFontSizeToFitWidth property to YES
         pickerLabel.minimumFontSize = 8.;
         pickerLabel.adjustsFontSizeToFitWidth = YES;
         [pickerLabel setTextAlignment:UITextAlignmentCenter];
-        [pickerLabel setBackgroundColor:[UIColor clearColor]];
         [pickerLabel setFont:[UIFont boldSystemFontOfSize:15]];
+    }
+    if (component == 0)
+    {
+        
+    }
+    if (component == 1)
+    {
+        [pickerLabel setBackgroundColor:[[_strokeColors objectAtIndex:row] objectForKey:@"val"]];
     }
     // Fill the label text here
     pickerLabel.text=[self pickerView:pickerView titleForRow:row forComponent:component];
