@@ -351,155 +351,62 @@
     [self setNeedsDisplay];
 }
 
+// 保存
+-(void)save
+{
+    //开始图像绘制上下文
+    UIGraphicsBeginImageContext(self.bounds.size);
+    // 获取上下文
+    _ctx = UIGraphicsGetCurrentContext();
+    // 设置线条的起点和终点的样式
+    CGContextSetLineCap(_ctx, kCGLineCapRound);
+    // 设置线条的转角的样式
+    CGContextSetLineJoin(_ctx, kCGLineJoinRound);
+    // 遍历重绘
+    for (id obj in self.graphs)
+    {
+        if([obj isMemberOfClass:[DGPen class]])
+        {
+            [self drawPen:(DGPen *)obj];
+        }
+        else if([obj isMemberOfClass:[DGLine class]])
+        {
+            [self drawLine:(DGLine *)obj];
+            
+        }
+        else if([obj isMemberOfClass:[DGCircular class]])
+        {
+            [self drawCircular:(DGCircular *)obj];
+            
+        }
+        else if([obj isMemberOfClass:[DGRectangle class]])
+        {
+            [self drawRectangle:(DGRectangle *)obj];
+        }
+    }
+    
+    //获取绘制的图片
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    //结束图像绘制上下文
+    UIGraphicsEndImageContext();
+    
+    //保存图片
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+}
 
-
-//- (void)drawRect:(CGRect)rect {
-////    [self drawLine];
-////    [self drawTriangle];
-////    [self drawCircular];
-//    [self drawRectgrange];
-////    [self drawArc];
-////    [self drawCake];
-//}
-
-// 画线
-//- (void) drawLine {
-//    // 1.取得和当前视图相关联的图形上下文(因为图形上下文决定绘制的输出目标)/
-//    
-//    // 如果是在drawRect方法中调用UIGraphicsGetCurrentContext方法获取出来的就是Layer的上下文
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    
-//    // 2.绘图(绘制直线), 保存绘图信息
-//    // 设置起点
-//    CGContextMoveToPoint(ctx, 10, 100);
-//    // 设置终点
-//    CGContextAddLineToPoint(ctx, 100, 100);
-//    
-//    // 设置绘图状态
-//    // 设置线条颜色 红色
-//    CGContextSetRGBStrokeColor(ctx, 1.0, 0, 0, 1.0);
-//    // 设置线条宽度
-//    CGContextSetLineWidth(ctx, 10);
-//    // 设置线条的起点和终点的样式
-//    CGContextSetLineCap(ctx, kCGLineCapRound);
-//    // 设置线条的转角的样式
-//    CGContextSetLineJoin(ctx, kCGLineJoinRound);
-//    // 绘制一条空心的线
-//    CGContextStrokePath(ctx);
-//    
-//    /*------------------华丽的分割线---------------------*/
-//    
-//    // 重新设置第二条线的起点
-//    CGContextMoveToPoint(ctx, 150, 200);
-//    // 设置第二条直线的终点(自动把上一条直线的终点当做起点)
-//    CGContextAddLineToPoint(ctx, 100, 50);
-//    // 设置第二条线的颜色 绿色
-//    //    [[UIColor greenColor] set];
-//    CGContextSetRGBStrokeColor(ctx, 0, 1.0, 0, 1.0);
-//    
-//    // 绘制图形(渲染图形到view上)
-//    // 绘制一条空心的线
-//    CGContextStrokePath(ctx);
-//}
-//
-//// 画三角形
-//- (void) drawTriangle {
-//    // 1.获取图形上下文
-//    CGContextRef ctx =  UIGraphicsGetCurrentContext();
-//    
-//    // 2. 绘制三角形
-//    // 设置起点
-//    CGContextMoveToPoint(ctx, 100, 10);
-//    // 设置第二个点
-//    CGContextAddLineToPoint(ctx, 50, 100);
-//    // 设置第三个点
-//    CGContextAddLineToPoint(ctx, 150, 100);
-//    // 设置终点
-//    //    CGContextAddLineToPoint(ctx, 100, 10);
-//    // 关闭起点和终点
-//    CGContextClosePath(ctx);
-//    // 3.渲染图形到layer上
-//    CGContextStrokePath(ctx);
-//}
-//
-//// 画圆
-//- (void) drawCircular {
-//    // 1.获取上下文
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    // 2.画圆
-//    CGContextAddEllipseInRect(ctx, CGRectMake(50, 100, 100, 100));
-//    
-//    [[UIColor greenColor] set];
-//    
-//    // 3.渲染
-//    CGContextStrokePath(ctx);
-////    CGContextFillPath(ctx);
-//}
-//
-//// 矩形
-//- (void) drawRectgrange {
-//    // Drawing code
-//    // 绘制四边形
-//    // 1.获取上下文
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    // 2.绘制四边形
-//    CGContextAddRect(ctx, CGRectMake(50, 50, 150, 100));
-//    
-//    // 如果要设置绘图的状态必须在渲染之前
-//    //    CGContextSetRGBStrokeColor(ctx, 1.0, 0, 0, 1.0);
-//    // 绘制什么类型的图形(空心或者实心).就要通过什么类型的方法设置状态
-//    //    CGContextSetRGBFillColor(ctx, 1.0, 0, 0, 1.0);
-//    
-//    // 调用OC的方法设置绘图的颜色
-//    //    [[UIColor purpleColor] setFill];
-//    //    [[UIColor blueColor] setStroke];
-//    // 调用OC的方法设置绘图颜色(同时设置了实心和空心)
-//    //    [[UIColor greenColor] set];
-//    [[UIColor colorWithRed:1.0 green:0 blue:0 alpha:1.0] set];
-//    
-//    // 3.渲染图形到layer上
-////    CGContextStrokePath(ctx);
-//    CGContextFillPath(ctx);
-//}
-//
-//// 圆弧
-//- (void) drawArc {
-//    // 画圆弧
-//    // 1.获取上下文
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    // 2.画圆弧
-//    // x/y 圆心
-//    // radius 半径
-//    // startAngle 开始的弧度
-//    // endAngle 结束的弧度
-//    // clockwise 画圆弧的方向 (0 顺时针, 1 逆时针)
-//    //    CGContextAddArc(ctx, 100, 100, 50, -M_PI_2, M_PI_2, 0);
-//    CGContextAddArc(ctx, 100, 100, 50, M_PI_2, M_PI, 0);
-//    CGContextClosePath(ctx);
-//    
-//    // 3.渲染
-//    //     CGContextStrokePath(ctx);
-//    CGContextFillPath(ctx);
-//}
-//
-//// 饼图
-//- (void) drawCake {
-//    // 1.获取上下文
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    // 2.画饼状图
-//    // 画线
-//    CGContextMoveToPoint(ctx, 100, 100);
-//    CGContextAddLineToPoint(ctx, 100, 150);
-//    // 画圆弧
-//    CGContextAddArc(ctx, 100, 100, 50, M_PI_2, M_PI, 0);
-//    //    CGContextAddArc(ctx, 100, 100, 50, -M_PI, M_PI_2, 1);
-//    
-//    // 关闭路径
-//    CGContextClosePath(ctx);
-//    
-//    
-//    // 3.渲染 (注意, 画线只能通过空心来画)
-//    CGContextFillPath(ctx);
-//    //    CGContextStrokePath(ctx);
-//}
+- (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+{
+    NSString *msg = nil;
+    if(error)
+    {
+        msg = @"图片保存失败";
+    }
+    else
+    {
+        msg = @"图片保存成功";
+    }
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"保存图片" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
 @end

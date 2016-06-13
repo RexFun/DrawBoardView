@@ -98,7 +98,15 @@
                           style:UIBarButtonItemStylePlain
                           target:self
                           action:@selector(backTap)]];
-
+    [bbarItems addObject:[[UIBarButtonItem alloc]
+                          initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                          target:self
+                          action:nil]];
+    [bbarItems addObject:[[UIBarButtonItem alloc]
+                          initWithTitle:@"保存"
+                          style:UIBarButtonItemStylePlain
+                          target:self
+                          action:@selector(saveTap)]];
     _bbar = [[UIToolbar alloc] init];
     [_bbar setItems:bbarItems animated:YES];
     [self addSubview:_bbar];
@@ -225,5 +233,10 @@
 - (void) backTap
 {
     [_drawBoard back];
+}
+
+- (void) saveTap
+{
+    [_drawBoard save];
 }
 @end

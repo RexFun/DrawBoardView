@@ -73,4 +73,5 @@ typedef NS_ENUM(uint, DrawType)
 
 - (void) clear;
 - (void) back;
+- (void) save;
 @end
