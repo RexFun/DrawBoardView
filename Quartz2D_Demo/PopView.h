@@ -13,7 +13,14 @@
 - (void)getSelectedItems:(NSDictionary*)items;
 @end
 
-@interface PopView : UIView<UIPickerViewDataSource,UIPickerViewDelegate>
+@interface SelectorCell : UICollectionViewCell
+@property (nonatomic,strong)UILabel* label;
+@property (nonatomic,strong)id val;
+- (void) selectDone;
+- (void) deselectDone;
+@end
+
+@interface PopView : UIView
 {
     id <PopViewDelegate> delegate;
 }
@@ -29,11 +36,14 @@
 @property (nonatomic,strong) UIButton* confirmBtn;
 @property (nonatomic,strong) UIView* southTopDividingLine;
 @property (nonatomic,strong) UIView* southMidDividingLine;
-@property (nonatomic,strong) UIPickerView* penAttPickerView;
+@property (nonatomic,strong) UICollectionView* lineWidthSelector;
+@property (nonatomic,strong) UICollectionView* strokeColorSelector;
 @property (nonatomic,strong) NSArray* lineWidths;
 @property (nonatomic,strong) NSArray* strokeColors;
 @property (nonatomic,strong) id curLineWidth;
 @property (nonatomic,strong) id curStrokeColor;
+@property int curLineWidthSelectedIndex;
+@property int curStrokeColorSelectedIndex;
 
 - (void)show;
 - (void)hide;

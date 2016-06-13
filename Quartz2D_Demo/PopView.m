@@ -8,9 +8,75 @@
 
 #import "PopView.h"
 
+// 宏 rgb颜色转换（16进制->10进制）
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
 #define WEIGHT [UIScreen mainScreen].bounds.size.width
 #define HEIGHT [UIScreen mainScreen].bounds.size.height
+#define SELECTOR_HEADER_H 30.0f
+#define V_SPACING 20.0f // 上下间距
+#define H_SPACING 20.0f // 左右间距
 
+/*
+ 自定义单元格
+ */
+@implementation SelectorCell
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [self initAttr];
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initAttr];
+    }
+    return self;
+}
+
+- (void) initAttr
+{
+    self.label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+    self.label.textColor = UIColorFromRGB(0x66B3FF);
+    self.label.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:self.label];
+    //背景色
+    self.contentView.backgroundColor = [UIColor whiteColor];
+    //圆角
+    self.layer.cornerRadius = 7;
+    self.contentView.layer.cornerRadius = 7.0f;
+    self.contentView.layer.borderWidth = 0.7f;
+    self.contentView.layer.borderColor = [UIColor clearColor].CGColor;
+    self.contentView.layer.masksToBounds = YES;
+    //阴影
+    self.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.layer.shadowOffset = CGSizeMake(2,2);
+    self.layer.shadowRadius = 2.0f;
+    self.layer.shadowOpacity = 0.4f;
+    self.layer.masksToBounds = NO;
+    self.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:self.contentView.layer.cornerRadius].CGPath;
+}
+
+- (void) selectDone
+{
+    self.contentView.layer.borderWidth = 6.0f;
+    self.contentView.layer.borderColor = UIColorFromRGB(0x66B3FF).CGColor;
+}
+- (void) deselectDone
+{
+    self.contentView.layer.borderWidth = 0.7f;
+    self.contentView.layer.borderColor = [UIColor clearColor].CGColor;
+}
+@end
+
+/*
+ 自定义弹窗
+ */
 @implementation PopView
 
 NSDictionary* penAttPickerResult;
@@ -23,13 +89,6 @@ NSDictionary* penAttPickerResult;
 - (id <PopViewDelegate>)delegate {
     return delegate;
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 - (id)init
 {
@@ -76,28 +135,49 @@ NSDictionary* penAttPickerResult;
     _strokeColors = [NSArray arrayWithObjects:
                      [NSDictionary dictionaryWithObjectsAndKeys:@"红",@"title",[UIColor redColor],@"val",nil],
                      [NSDictionary dictionaryWithObjectsAndKeys:@"绿",@"title",[UIColor greenColor],@"val",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"蓝",@"title",[UIColor blueColor],@"val",nil], nil];
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"蓝",@"title",[UIColor blueColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"黄",@"title",[UIColor yellowColor],@"val",nil], nil];
 
-    _penAttPickerView = [[UIPickerView alloc]init];
-    _penAttPickerView.delegate = self;
-    _penAttPickerView.dataSource = self;
-    
+    // 选择器布局
+    UICollectionViewFlowLayout *flowLayout1 = [[UICollectionViewFlowLayout alloc ]init];
+    flowLayout1.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    UICollectionViewFlowLayout *flowLayout2 = [[UICollectionViewFlowLayout alloc ]init];
+    flowLayout2.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+//    flowLayout.headerReferenceSize = CGSizeMake(200, 50);
+
+    // 线宽选择器
+    _lineWidthSelector = [[UICollectionView alloc] initWithFrame:CGRectMake(0,0,0,0) collectionViewLayout:flowLayout1];
+    _lineWidthSelector.backgroundColor = [UIColor whiteColor];
+    [_lineWidthSelector registerClass:[SelectorCell class] forCellWithReuseIdentifier:@"cell"];//注册cell
+//    [_lineWidthSelector registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];//注册header的view
+    _lineWidthSelector.dataSource=self;
+    _lineWidthSelector.delegate=self;
+    // 颜色选择器
+    _strokeColorSelector = [[UICollectionView alloc] initWithFrame:CGRectMake(0,0,0,0) collectionViewLayout:flowLayout2];
+    _strokeColorSelector.backgroundColor = [UIColor whiteColor];
+    [_strokeColorSelector registerClass:[SelectorCell class]forCellWithReuseIdentifier:@"cell"];//注册cell
+//    [_strokeColorSelector registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];//注册header的view
+    _strokeColorSelector.dataSource=self;
+    _strokeColorSelector.delegate=self;
+    // 取消按钮
     _cancelBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_cancelBtn setBackgroundColor:[UIColor whiteColor]];
     [_cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     [_cancelBtn addTarget:self action:@selector(cancelTap) forControlEvents:UIControlEventTouchUpInside];
-    
+    // 确定按钮
     _confirmBtn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_confirmBtn setBackgroundColor:[UIColor whiteColor]];
     [_confirmBtn setTitle:@"确定" forState:UIControlStateNormal];
     [_confirmBtn addTarget:self action:@selector(confirmTap) forControlEvents:UIControlEventTouchUpInside];
-    
+    // 分割线-竖向
     _southMidDividingLine  = [[UIView alloc]init];
     [_southMidDividingLine setBackgroundColor:[UIColor grayColor]];
+    // 分割线-横向
     _southTopDividingLine  = [[UIView alloc]init];
     [_southTopDividingLine setBackgroundColor:[UIColor grayColor]];
     
-    [_coreNorthView addSubview:_penAttPickerView];
+    [_coreNorthView addSubview:_lineWidthSelector];
+    [_coreNorthView addSubview:_strokeColorSelector];
     [_coreSouthView addSubview:_cancelBtn];
     [_coreSouthView addSubview:_confirmBtn];
     [_coreSouthView addSubview:_southMidDividingLine];
@@ -171,34 +251,64 @@ NSDictionary* penAttPickerResult;
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1
                                                       constant:0]];
-    // coreNorthView_penAttPickView
-    _penAttPickerView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_penAttPickerView
+    // coreNorthView_lineWidthSelector
+    _lineWidthSelector.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_lineWidthSelector
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_coreNorthView
                                                      attribute:NSLayoutAttributeWidth
                                                     multiplier:1
                                                       constant:-10]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_penAttPickerView
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_lineWidthSelector
                                                      attribute:NSLayoutAttributeHeight
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_coreNorthView
                                                      attribute:NSLayoutAttributeHeight
-                                                    multiplier:1
-                                                      constant:-10]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_penAttPickerView
+                                                    multiplier:0.5
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_lineWidthSelector
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_coreNorthView
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1
                                                       constant:0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_penAttPickerView
-                                                     attribute:NSLayoutAttributeCenterY
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_lineWidthSelector
+                                                     attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_coreNorthView
-                                                     attribute:NSLayoutAttributeCenterY
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1
+                                                      constant:5]];
+    // coreNorthView_strokeColorSelector
+    _strokeColorSelector.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_strokeColorSelector
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_coreNorthView
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:1
+                                                      constant:-10]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_strokeColorSelector
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_coreNorthView
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:0.5
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_strokeColorSelector
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_coreNorthView
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_strokeColorSelector
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_coreNorthView
+                                                     attribute:NSLayoutAttributeBottom
                                                     multiplier:1
                                                       constant:0]];
     
@@ -354,82 +464,126 @@ NSDictionary* penAttPickerResult;
                                                       constant:0]];
 }
 
-//UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件包含的列数
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView*)pickerView
+#pragma mark- CollectionView Source Delegate
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 2; // 返回2表明该控件只包含2列
+    return 1;
 }
-
-//UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件指定列包含多少个列表项
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    // 如果该控件只包含一列，因此无须理会列序号参数component
-    // 该方法返回teams.count，表明teams包含多少个元素，该控件就包含多少行
-    if (component == 0) {
-        return _lineWidths.count;
-    }
-    else
-        return _strokeColors.count;
-    
-}
-
-// UIPickerViewDelegate中定义的方法，该方法返回的NSString将作为UIPickerView中指定列和列表项的标题文本
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    // 由于该控件只包含一列，因此无须理会列序号参数component
-    // 该方法根据row参数返回teams中的元素，row参数代表列表项的编号，
-    // 因此该方法表示第几个列表项，就使用teams中的第几个元素
-    if (component == 0)
+    NSInteger num = 0;
+    if (collectionView == _lineWidthSelector)
     {
-        return [[_lineWidths objectAtIndex:row] objectForKey:@"title"];
+        num = _lineWidths.count;
     }
-    return [[_strokeColors objectAtIndex:row] objectForKey:@"title"];
+    else if (collectionView == _strokeColorSelector)
+    {
+        num = _strokeColors.count;
+    }
+    return num;
 }
-
-
-// 当用户选中UIPickerViewDataSource中指定列和列表项时激发该方法
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *tmp = component == 0 ? _lineWidths: _strokeColors;
-    if (component == 0)
+    static NSString *identify=@"cell";
+    SelectorCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identify forIndexPath:indexPath];
+    if (collectionView == _lineWidthSelector)
     {
-        _curLineWidth = [((NSDictionary*)[tmp objectAtIndex:row]) objectForKey:@"val"];
+        cell.label.text = @"●";
+        cell.label.font = [UIFont systemFontOfSize:[[[_lineWidths objectAtIndex:indexPath.row] objectForKey:@"val"] floatValue]*3];
+        cell.val = [[_lineWidths objectAtIndex:indexPath.row] objectForKey:@"val"];
+        if (_curLineWidthSelectedIndex == indexPath.row)
+        {
+            [cell selectDone];
+        }
+        else
+        {
+            [cell deselectDone];
+        }
     }
-    else
+    else if (collectionView == _strokeColorSelector)
     {
-        _curStrokeColor = [((NSDictionary*)[tmp objectAtIndex:row]) objectForKey:@"val"];
+        cell.contentView.backgroundColor = [[_strokeColors objectAtIndex:indexPath.row] objectForKey:@"val"];
+        cell.val = [[_strokeColors objectAtIndex:indexPath.row] objectForKey:@"val"];
+        if (_curStrokeColorSelectedIndex == indexPath.row)
+        {
+            [cell selectDone];
+        }
+        else
+        {
+            [cell deselectDone];
+        }
     }
+    return cell;
 }
 
-#pragma UIPickerViewDelegate中定义的方法，该方法返回的NSString将作为
-// UIPickerView中指定列的宽度
--(CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+#pragma mark- CollectionView Delegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return pickerView.bounds.size.width/2 - 5;
+    SelectorCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    if (collectionView == _lineWidthSelector)
+    {
+        _curLineWidth = cell.val;
+        _curLineWidthSelectedIndex = indexPath.row;
+    }
+    else if (collectionView == _strokeColorSelector)
+    {
+        _curStrokeColor = cell.val;
+        _curStrokeColorSelectedIndex = indexPath.row;
+    }
+    [collectionView reloadData];
 }
 
-- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+#pragma mark- CollectionView Flow Delegate
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UILabel* pickerLabel = (UILabel*)view;
-    if (!pickerLabel){
-        pickerLabel = [[UILabel alloc] init];
-        pickerLabel.minimumFontSize = 8.;
-        pickerLabel.adjustsFontSizeToFitWidth = YES;
-        [pickerLabel setTextAlignment:UITextAlignmentCenter];
-        [pickerLabel setFont:[UIFont boldSystemFontOfSize:15]];
-    }
-    if (component == 0)
-    {
-        
-    }
-    if (component == 1)
-    {
-        [pickerLabel setBackgroundColor:[[_strokeColors objectAtIndex:row] objectForKey:@"val"]];
-    }
-    // Fill the label text here
-    pickerLabel.text=[self pickerView:pickerView titleForRow:row forComponent:component];
-    return pickerLabel;
+    return CGSizeMake(collectionView.bounds.size.width/3-H_SPACING, collectionView.bounds.size.width/3-H_SPACING);
 }
+
+/**
+ * Section的上下左右边距--UIEdgeInsetsMake(上, 左, 下, 右);逆时针
+ */
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
+{
+    return UIEdgeInsetsMake(10, 10, 10, 10);
+}
+
+/**
+ * Section中每个Cell的上下边距
+ */
+- (CGFloat)collectionView: (UICollectionView *)collectionView layout: (UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex: (NSInteger)section
+{
+    return V_SPACING;
+}
+
+/**
+ * Section中每个Cell的左右边距
+ */
+- (CGFloat)collectionView: (UICollectionView *)collectionView layout: (UICollectionViewLayout*)collectionViewLayout
+minimumInteritemSpacingForSectionAtIndex: (NSInteger)section
+{
+    return H_SPACING;
+}
+
+/**
+ * headerView的大小
+ */
+//- (CGSize)collectionView: (UICollectionView *)collectionView layout: (UICollectionViewLayout*)collectionViewLayout
+//referenceSizeForHeaderInSection: (NSInteger)section
+//{
+//    return CGSizeMake(0, 30);
+//}
+//
+//- (UICollectionReusableView *) collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (kind == UICollectionElementKindSectionHeader)
+//    {//如果想要自定义header，只需要定义UICollectionReusableView的子类A，然后在该处使用，注意AIdentifier要设为注册的字符串，此处为“header”
+//        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
+//        view.backgroundColor = [UIColor yellowColor];
+//    return view;
+//
+//    }
+//    return nil;
+//}
 
 // 离开view(停止触摸)
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
