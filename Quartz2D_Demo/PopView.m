@@ -97,24 +97,11 @@ NSDictionary* penAttPickerResult;
         _curLineWidth = @"3";
         _curStrokeColor = [UIColor redColor];
         [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
-//        [self setFrame:CGRectMake(0, 0, WEIGHT, HEIGHT)];
         [self setHidden:YES];
         [self initCoreView];
     }
     return self;
 }
-//
-//- (id)initWithFrame:(CGRect)frame
-//{
-//    self = [super initWithFrame:frame];
-//    if (self) {
-//        [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
-////        [self setFrame:CGRectMake(0, 0, WEIGHT, HEIGHT)];
-//        [self setHidden:YES];
-//        [self initCoreView];
-//    }
-//    return self;
-//}
 
 - (void)initCoreView
 {
@@ -190,22 +177,35 @@ NSDictionary* penAttPickerResult;
 
 - (void)initConstraint
 {
+    CGFloat _w = 0.0f;
+    CGFloat _h = 0.0f;
+    NSString *device = [[UIDevice currentDevice].model substringToIndex:4];
+    if ([device isEqualToString:@"iPho"])// This is iPhone.
+    {
+        _w = 230.0f;
+        _h = 230.0f;
+    }
+    else if ([device isEqualToString:@"iPad"])// This is iPad.
+    {
+        _w = 300.0f;
+        _h = 300.0f;
+    }
     // coreView
     _coreView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_coreView
                                                      attribute:NSLayoutAttributeWidth
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeWidth
-                                                    multiplier:0.7
-                                                      constant:0]];
+                                                        toItem:nil
+                                                     attribute:nil
+                                                    multiplier:0
+                                                      constant:_w]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_coreView
                                                      attribute:NSLayoutAttributeHeight
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeHeight
-                                                    multiplier:0.5
-                                                      constant:0]];
+                                                        toItem:nil
+                                                     attribute:nil
+                                                    multiplier:0
+                                                      constant:_h]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_coreView
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
