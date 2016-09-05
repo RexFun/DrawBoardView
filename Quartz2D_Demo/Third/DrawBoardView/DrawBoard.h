@@ -54,8 +54,22 @@ typedef NS_ENUM(uint, DrawType)
 @property UIColor* strokeColor;
 @end
 
+/* 画板代理 */
+@protocol DrawBoardDelegate<NSObject>
+@optional
+- (void) afterSave;
+@end
 /* 画板 */
 @interface DrawBoard : UIView
+// Delegate
+{
+    id <DrawBoardDelegate> delegate;
+}
+// Delegate Setter
+- (void)setDelegate:(id <DrawBoardDelegate>)_delegate;
+// Delegate Getter
+- (id <DrawBoardDelegate>)delegate;
+
 @property CGContextRef ctx;
 @property DrawType drawType;                            //当前画图类型
 //@property (nonatomic,strong)NSMutableArray* paths;      //画笔路径数组

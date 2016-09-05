@@ -22,6 +22,17 @@
 
 @implementation DrawBoard
 
+// Delegate Setter
+- (void)setDelegate:(id <DrawBoardDelegate>)_delegate
+{
+    delegate = _delegate;
+}
+// Delegate Getter
+- (id <DrawBoardDelegate>)delegate
+{
+    return delegate;
+}
+
 - (NSMutableArray *)pens
 {
     if (_pens == nil) {
@@ -408,5 +419,12 @@
     }
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"保存图片" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
+}
+
+#pragma marks -- UIAlertViewDelegate --
+//AlertView已经消失时执行的事件
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    [self.delegate afterSave];
 }
 @end

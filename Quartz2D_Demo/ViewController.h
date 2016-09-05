@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DrawBoardView.h"
+#import "DrawBoardWindow.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UAModalPanelDelegate,DrawBoardDelegate>
 
-@property (nonatomic,strong)DrawBoardView *drawboard;
+@property (nonatomic,strong)UIButton* btn;
+@property (strong, nonatomic) DrawBoardWindow* drawBoardWindow;
 
 @end
 

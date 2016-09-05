@@ -10,6 +10,7 @@
 
 @implementation DrawBoardView
 
+// init
 - (id)init
 {
     self = [super init];
@@ -19,6 +20,7 @@
     return self;
 }
 
+// initWithFrame
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -28,6 +30,7 @@
     return self;
 }
 
+// drawSubView
 - (void) drawSubView
 {
     // tbar
