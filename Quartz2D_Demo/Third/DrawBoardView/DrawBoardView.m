@@ -300,6 +300,8 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1
                                                       constant:0]];
+    // 重置为默认线宽和默认绘制颜色
+    [self resetDefaultLineWidthAndStrokeColor];
 }
 
 - (void) drawPenTap
@@ -354,6 +356,23 @@
             [self.activityIndicator stopAnimating];
         });
     });
+}
 
+- (void) selectLineWidthAtIndex:(int)index
+{
+    [_popView selectLineWidthAtIndex:index];
+    [_drawBoard setLineWidth:[[_popView getSelectedLineWidth] floatValue]];
+}
+
+- (void) selectStrokeColorAtIndex:(int)index
+{
+    [_popView selectStrokeColorAtIndex:index];
+    [_drawBoard setStrokeColor:[_popView getSelectedStrokeColor]];
+}
+
+- (void) resetDefaultLineWidthAndStrokeColor
+{
+    [self selectLineWidthAtIndex:0];
+    [self selectStrokeColorAtIndex:0];
 }
 @end

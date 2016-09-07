@@ -94,8 +94,6 @@ NSDictionary* penAttPickerResult;
 {
     self = [super init];
     if (self) {
-        _curLineWidth = @"3";
-        _curStrokeColor = [UIColor redColor];
         [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
         [self setHidden:YES];
         [self initCoreView];
@@ -620,10 +618,34 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section
 {
     [self hide];
 }
+
 - (void)confirmTap
 {
-    penAttPickerResult = [NSDictionary dictionaryWithObjectsAndKeys:_curLineWidth,@"lineWidth",_curStrokeColor,@"strokeColor",nil];
+    penAttPickerResult = [NSDictionary dictionaryWithObjectsAndKeys:[self getSelectedLineWidth],@"lineWidth",[self getSelectedStrokeColor],@"strokeColor",nil];
     [self.delegate getSelectedItems:penAttPickerResult];
     [self hide];
 }
+
+- (void)selectLineWidthAtIndex:(int)index
+{
+    _curLineWidthSelectedIndex = index;
+    [_lineWidthSelector reloadData];
+}
+
+- (void)selectStrokeColorAtIndex:(int)index
+{
+    _curStrokeColorSelectedIndex = index;
+    [_strokeColorSelector reloadData];
+}
+
+- (id)getSelectedLineWidth
+{
+    return [[_lineWidths objectAtIndex:_curLineWidthSelectedIndex] objectForKey:@"val"];
+}
+
+- (UIColor*)getSelectedStrokeColor
+{
+    return [[_strokeColors objectAtIndex:_curStrokeColorSelectedIndex] objectForKey:@"val"];
+}
+
 @end

@@ -74,8 +74,6 @@
     self = [super init];
     if (self) {
         [self setBackgroundColor:[UIColor whiteColor]];
-        _lineWidth = 3;
-        _strokeColor = [UIColor redColor];
     }
     return self;
 }

@@ -47,5 +47,8 @@
 
 - (void)show;
 - (void)hide;
-
+- (void)selectLineWidthAtIndex:(int)index;
+- (void)selectStrokeColorAtIndex:(int)index;
+- (id)getSelectedLineWidth;
+- (UIColor*)getSelectedStrokeColor;
 @end

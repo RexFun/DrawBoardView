@@ -20,4 +20,7 @@
 
 - (id)initWithTbarItemsSwitch:(NSArray*)tbarItemsSwitch;
 - (id)initWithFrame:(CGRect)frame tbarItemsSwitch:(NSArray*)tbarItemsSwitch;
+
+- (void)selectLineWidthAtIndex:(int)index;
+- (void)selectStrokeColorAtIndex:(int)index;
 @end
