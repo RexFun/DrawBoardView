@@ -300,6 +300,8 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1
                                                       constant:0]];
+    // 保存前弹窗
+    _saveAlertView = [[UIAlertView alloc] initWithTitle:@"是否保存？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     // 重置为默认线宽和默认绘制颜色
     [self resetDefaultLineWidthAndStrokeColor];
 }
@@ -328,6 +330,7 @@
     [_popView show];
 }
 
+# pragma 实现PopViewDelegate
 - (void)getSelectedItems:(NSDictionary *)items
 {
     _drawBoard.lineWidth = [[items objectForKey:@"lineWidth"] floatValue];
@@ -346,16 +349,7 @@
 
 - (void) saveTap
 {
-    [self.activityIndicator startAnimating];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        // 处理耗时操作的代码块...
-        [_drawBoard save];
-        //通知主线程刷新
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //回调或者说是通知主线程刷新，
-            [self.activityIndicator stopAnimating];
-        });
-    });
+    [_saveAlertView show];
 }
 
 - (void) selectLineWidthAtIndex:(int)index
@@ -374,5 +368,22 @@
 {
     [self selectLineWidthAtIndex:0];
     [self selectStrokeColorAtIndex:0];
+}
+
+# pragma 实现UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self.activityIndicator startAnimating];
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            // 处理耗时操作的代码块...
+            [_drawBoard save];
+            //通知主线程刷新
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //回调或者说是通知主线程刷新，
+                [self.activityIndicator stopAnimating];
+            });
+        });
+    }
 }
 @end

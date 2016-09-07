@@ -105,7 +105,8 @@
 #pragma mark - 画板代理
 - (void) afterSave
 {
-    NSLog(@"点击保存后...");
+    NSLog(@"点击保存后清屏...");
+    [self.drawBoardWindow.drawBoardView clearTap];
     [self.drawBoardWindow hide];
 }
 
