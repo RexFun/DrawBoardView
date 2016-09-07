@@ -29,9 +29,13 @@
 
 - (void) initSubViews:(CGRect)frame
 {
+    // 设置 UAModelPanel 内外边距
+    self.outerMarginV = 30;
+    self.innerMargin = 10;
+    // 初始化drawBoardView
     self.drawBoardView = [[DrawBoardView alloc] init];
     [self.contentView addSubview:self.drawBoardView];
-    
+    // 布局drawBoardView
     self.drawBoardView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.drawBoardView
                                                           attribute:NSLayoutAttributeWidth
