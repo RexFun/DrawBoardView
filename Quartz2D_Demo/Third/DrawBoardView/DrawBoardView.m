@@ -196,6 +196,41 @@
                                                      attribute:NSLayoutAttributeHeight
                                                     multiplier:1
                                                       constant:0]];
+    
+    // activityIndicator
+    _activityIndicator = [[UIActivityIndicatorView alloc] init];
+    _activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    _activityIndicator.hidesWhenStopped = YES;//停止后是否隐藏(默认为YES)
+    [self addSubview:_activityIndicator];
+    _activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_activityIndicator
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:0
+                                                      constant:50]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_activityIndicator
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:0
+                                                      constant:50]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_activityIndicator
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_activityIndicator
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1
+                                                      constant:0]];
 }
 
 - (void) drawPenTap
@@ -240,6 +275,16 @@
 
 - (void) saveTap
 {
-    [_drawBoard save];
+    [self.activityIndicator startAnimating];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // 处理耗时操作的代码块...
+        [_drawBoard save];
+        //通知主线程刷新
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //回调或者说是通知主线程刷新，
+            [self.activityIndicator stopAnimating];
+        });
+    });
+
 }
 @end

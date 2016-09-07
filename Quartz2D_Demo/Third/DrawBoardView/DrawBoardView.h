@@ -16,5 +16,6 @@
 @property (nonatomic,strong)UIToolbar* bbar;
 @property (nonatomic,strong)DrawBoard* drawBoard;
 @property (nonatomic,strong)PopView* popView;
+@property (nonatomic,strong)UIActivityIndicatorView* activityIndicator;
 
 @end
