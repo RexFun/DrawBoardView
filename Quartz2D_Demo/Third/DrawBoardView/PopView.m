@@ -114,16 +114,31 @@ NSDictionary* penAttPickerResult;
     [_coreView.layer setShadowOffset:CGSizeMake(10, 10)];
     [_coreView.layer setShadowColor:[[UIColor blackColor] CGColor]];
     
+    // 线宽数组
     _lineWidths = [NSArray arrayWithObjects:
-                   [NSDictionary dictionaryWithObjectsAndKeys:@"细",@"title",@"3",@"val",nil],
-                   [NSDictionary dictionaryWithObjectsAndKeys:@"中",@"title",@"6",@"val",nil],
-                   [NSDictionary dictionaryWithObjectsAndKeys:@"粗",@"title",@"9",@"val",nil], nil];
-    
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s1",@"title",@"3",@"val",nil],
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s2",@"title",@"6",@"val",nil],
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s3",@"title",@"9",@"val",nil],
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s4",@"title",@"12",@"val",nil],
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s5",@"title",@"15",@"val",nil],
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s6",@"title",@"18",@"val",nil],
+                   [NSDictionary dictionaryWithObjectsAndKeys:@"s7",@"title",@"21",@"val",nil], nil];
+    // 颜色数组
     _strokeColors = [NSArray arrayWithObjects:
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"红",@"title",[UIColor redColor],@"val",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"绿",@"title",[UIColor greenColor],@"val",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"蓝",@"title",[UIColor blueColor],@"val",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"黄",@"title",[UIColor yellowColor],@"val",nil], nil];
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c1",@"title",[UIColor blackColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c2",@"title",[UIColor whiteColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c3",@"title",[UIColor redColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c4",@"title",[UIColor orangeColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c5",@"title",[UIColor yellowColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c6",@"title",[UIColor greenColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c7",@"title",[UIColor cyanColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c8",@"title",[UIColor magentaColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c9",@"title",[UIColor purpleColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c10",@"title",[UIColor grayColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c11",@"title",[UIColor lightGrayColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c12",@"title",[UIColor darkGrayColor],@"val",nil],
+                     [NSDictionary dictionaryWithObjectsAndKeys:@"c13",@"title",[UIColor brownColor],@"val",nil],
+                     nil];
 
     // 选择器布局
     UICollectionViewFlowLayout *flowLayout1 = [[UICollectionViewFlowLayout alloc ]init];

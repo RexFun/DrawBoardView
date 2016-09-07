@@ -33,7 +33,12 @@
     self.outerMarginV = 30;
     self.innerMargin = 10;
     // 初始化drawBoardView
-    self.drawBoardView = [[DrawBoardView alloc] init];
+    // 初始化方式1
+    //    self.drawBoardView = [[DrawBoardView alloc] init];
+    // 初始化方式2
+    // tbar 按钮开关组（1：显示；0：隐藏）（画笔、直线、圆形、矩形）；
+    NSArray* tbarItemsSwitch = [NSArray arrayWithObjects:@"1",@"0",@"0",@"0",nil];
+    self.drawBoardView = [[DrawBoardView alloc] initWithTbarItemsSwitch:tbarItemsSwitch];
     [self.contentView addSubview:self.drawBoardView];
     // 布局drawBoardView
     self.drawBoardView.translatesAutoresizingMaskIntoConstraints = NO;

@@ -15,7 +15,15 @@
 {
     self = [super init];
     if (self) {
-        [self drawSubView];
+        [self drawSubView:nil];
+    }
+    return self;
+}
+- (id)initWithTbarItemsSwitch:(NSArray*)tbarItemsSwitch
+{
+    self = [super init];
+    if (self) {
+        [self drawSubView:tbarItemsSwitch];
     }
     return self;
 }
@@ -25,36 +33,83 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self drawSubView];
+        [self drawSubView:nil];
+    }
+    return self;
+}
+- (id)initWithFrame:(CGRect)frame tbarItemsSwitch:(NSArray*)tbarItemsSwitch
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self drawSubView:tbarItemsSwitch];
     }
     return self;
 }
 
 // drawSubView
-- (void) drawSubView
+- (void) drawSubView:(NSArray*)tbarItemsSwitch
 {
-    // tbar
     NSMutableArray *tbarItems = [NSMutableArray array];
-    [tbarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"画笔"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(drawPenTap)]];
-    [tbarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"直线"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(drawLineTap)]];
-    [tbarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"圆形"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(drawCircularTap)]];
-    [tbarItems addObject:[[UIBarButtonItem alloc]
-                          initWithTitle:@"矩形"
-                          style:UIBarButtonItemStylePlain
-                          target:self
-                          action:@selector(drawRectangleTap)]];
+    // tbar
+    if(tbarItemsSwitch != nil)
+    {
+        if([[tbarItemsSwitch objectAtIndex:0] integerValue]==1)
+        {
+            [tbarItems addObject:[[UIBarButtonItem alloc]
+                                  initWithTitle:@"画笔"
+                                  style:UIBarButtonItemStylePlain
+                                  target:self
+                                  action:@selector(drawPenTap)]];
+        }
+        if ([[tbarItemsSwitch objectAtIndex:1] integerValue]==1)
+        {
+            [tbarItems addObject:[[UIBarButtonItem alloc]
+                                  initWithTitle:@"直线"
+                                  style:UIBarButtonItemStylePlain
+                                  target:self
+                                  action:@selector(drawLineTap)]];
+        }
+        if ([[tbarItemsSwitch objectAtIndex:2] integerValue]==1)
+        {
+            [tbarItems addObject:[[UIBarButtonItem alloc]
+                                  initWithTitle:@"圆形"
+                                  style:UIBarButtonItemStylePlain
+                                  target:self
+                                  action:@selector(drawCircularTap)]];
+        }
+        if ([[tbarItemsSwitch objectAtIndex:3] integerValue]==1)
+        {
+            [tbarItems addObject:[[UIBarButtonItem alloc]
+                                  initWithTitle:@"矩形"
+                                  style:UIBarButtonItemStylePlain
+                                  target:self
+                                  action:@selector(drawRectangleTap)]];
+        }
+    }
+    else
+    {
+        [tbarItems addObject:[[UIBarButtonItem alloc]
+                              initWithTitle:@"画笔"
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(drawPenTap)]];
+        [tbarItems addObject:[[UIBarButtonItem alloc]
+                              initWithTitle:@"直线"
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(drawLineTap)]];
+        [tbarItems addObject:[[UIBarButtonItem alloc]
+                              initWithTitle:@"圆形"
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(drawCircularTap)]];
+        [tbarItems addObject:[[UIBarButtonItem alloc]
+                              initWithTitle:@"矩形"
+                              style:UIBarButtonItemStylePlain
+                              target:self
+                              action:@selector(drawRectangleTap)]];
+    }
+    
     _tbar = [[UIToolbar alloc] init];
     [_tbar setItems:tbarItems animated:YES];
     [self addSubview:_tbar];
