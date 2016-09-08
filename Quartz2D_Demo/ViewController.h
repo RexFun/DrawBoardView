@@ -9,18 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "DrawBoardWindow.h"
 
-//@interface ViewController : UIViewController<UIPopoverPresentationControllerDelegate,DrawBoardDelegate>
-//
-//@property (nonatomic,strong)UIButton* btn;
-//@property (nonatomic,strong)DrawBoardView* drawBoardView;
-//@property (nonatomic,strong)UIPopoverPresentationController* popoverPC;
-//@property (nonatomic,strong)UIViewController* containerVC;
-//
-//@end
-
 @interface ViewController : UIViewController<UAModalPanelDelegate,DrawBoardDelegate>
 
 @property (nonatomic,strong)UIButton* btn;
+@property (nonatomic,strong)UIImageView* imgView;
 @property (strong, nonatomic) DrawBoardWindow* drawBoardWindow;
 
 @end

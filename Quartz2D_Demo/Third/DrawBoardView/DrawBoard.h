@@ -58,6 +58,7 @@ typedef NS_ENUM(uint, DrawType)
 @protocol DrawBoardDelegate<NSObject>
 @optional
 - (void) afterSave;
+- (void) getCurSavedImage:(UIImage*)image;
 @end
 /* 画板 */
 @interface DrawBoard : UIView
@@ -72,7 +73,6 @@ typedef NS_ENUM(uint, DrawType)
 
 @property CGContextRef ctx;
 @property DrawType drawType;                            //当前画图类型
-//@property (nonatomic,strong)NSMutableArray* paths;      //画笔路径数组
 @property (nonatomic,strong)NSMutableArray* pens;       //画笔路径数组
 @property (nonatomic,strong)NSMutableArray* lines;      //直线数组
 @property (nonatomic,strong)NSMutableArray* circulars;  //圆形数组

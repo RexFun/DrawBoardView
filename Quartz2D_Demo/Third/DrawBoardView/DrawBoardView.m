@@ -269,65 +269,76 @@
     [self resetDefaultLineWidthAndStrokeColor];
 }
 
+/* 点击画笔 */
 - (void) drawPenTap
 {
     _drawBoard.drawType = T_PEN;
     [_popView show];
 }
 
+/* 点击直线 */
 - (void) drawLineTap
 {
     _drawBoard.drawType = T_LINE;
     [_popView show];
 }
 
+/* 点击圆形 */
 - (void) drawCircularTap
 {
     _drawBoard.drawType = T_CIRCULAR;
     [_popView show];
 }
 
+/* 点击矩形 */
 - (void) drawRectangleTap
 {
     _drawBoard.drawType = T_RECT;
     [_popView show];
 }
 
-# pragma 实现PopViewDelegate
+# pragma 实现PopViewDelegate代理
+/* 获取选中的线宽和颜色 */
 - (void)getSelectedItems:(NSDictionary *)items
 {
     _drawBoard.lineWidth = [[items objectForKey:@"lineWidth"] floatValue];
     _drawBoard.strokeColor = [items objectForKey:@"strokeColor"];
 }
 
+/* 清屏 */
 - (void) clearTap
 {
     [_drawBoard clear];
 }
 
+/* 撤销 */
 - (void) backTap
 {
     [_drawBoard back];
 }
 
+/* 保存 */
 - (void) saveTap
 {
     UIAlertView* saveAlertView = [[UIAlertView alloc] initWithTitle:@"是否保存？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [saveAlertView show];
 }
 
+/* 按下标选中线宽 */
 - (void) selectLineWidthAtIndex:(int)index
 {
     [_popView selectLineWidthAtIndex:index];
     [_drawBoard setLineWidth:[[_popView getSelectedLineWidth] floatValue]];
 }
 
+/* 按下标选中颜色 */
 - (void) selectStrokeColorAtIndex:(int)index
 {
     [_popView selectStrokeColorAtIndex:index];
     [_drawBoard setStrokeColor:[_popView getSelectedStrokeColor]];
 }
 
+/* 重置默认 */
 - (void) resetDefaultLineWidthAndStrokeColor
 {
     [self selectLineWidthAtIndex:0];
@@ -335,6 +346,7 @@
 }
 
 # pragma 实现UIAlertViewDelegate
+/*  */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     UIAlertView* waitingAlertView = [[UIAlertView alloc] initWithTitle:@"请等待..." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];

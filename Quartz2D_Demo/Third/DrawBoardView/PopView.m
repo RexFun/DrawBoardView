@@ -604,21 +604,25 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section
     [self hide];
 }
 
+/* 显示 */
 - (void)show
 {
     [self setHidden:NO];
 }
 
+/* 隐藏 */
 - (void)hide
 {
     [self setHidden:YES];
 }
 
+/* 点击取消 */
 - (void)cancelTap
 {
     [self hide];
 }
 
+/* 点击确定 */
 - (void)confirmTap
 {
     penAttPickerResult = [NSDictionary dictionaryWithObjectsAndKeys:[self getSelectedLineWidth],@"lineWidth",[self getSelectedStrokeColor],@"strokeColor",nil];
@@ -626,23 +630,27 @@ minimumInteritemSpacingForSectionAtIndex: (NSInteger)section
     [self hide];
 }
 
+/* 按下标选中线宽 */
 - (void)selectLineWidthAtIndex:(int)index
 {
     _curLineWidthSelectedIndex = index;
     [_lineWidthSelector reloadData];
 }
 
+/* 按下标选中颜色 */
 - (void)selectStrokeColorAtIndex:(int)index
 {
     _curStrokeColorSelectedIndex = index;
     [_strokeColorSelector reloadData];
 }
 
+/* 获取选中线宽 */
 - (id)getSelectedLineWidth
 {
     return [[_lineWidths objectAtIndex:_curLineWidthSelectedIndex] objectForKey:@"val"];
 }
 
+/* 获取选中颜色 */
 - (UIColor*)getSelectedStrokeColor
 {
     return [[_strokeColors objectAtIndex:_curStrokeColorSelectedIndex] objectForKey:@"val"];

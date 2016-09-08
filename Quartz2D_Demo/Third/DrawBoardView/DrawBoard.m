@@ -22,12 +22,12 @@
 
 @implementation DrawBoard
 
-// Delegate Setter
+/* Delegate Setter */
 - (void)setDelegate:(id <DrawBoardDelegate>)_delegate
 {
     delegate = _delegate;
 }
-// Delegate Getter
+/* Delegate Getter */
 - (id <DrawBoardDelegate>)delegate
 {
     return delegate;
@@ -78,7 +78,7 @@
     return self;
 }
 
-// 触摸-开始
+/* 触摸-开始 */
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     switch (_drawType)
@@ -90,7 +90,7 @@
         default:break;
     }
 }
-// 触摸-移动
+/* 触摸-移动 */
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     switch (_drawType)
@@ -103,13 +103,13 @@
     }
 }
 
-// 离开view(停止触摸)
+/* 离开view(停止触摸) */
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self touchesMoved:touches withEvent:event];
 }
 
-// 重绘
+/* 重绘 */
 - (void)drawRect:(CGRect)rect
 {
     // 获取上下文
@@ -143,7 +143,7 @@
     
 }
 
-// 画笔-触摸-开始
+/* 画笔-触摸-开始 */
 - (void)touchesBeganPen:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -163,7 +163,7 @@
     [self.graphs addObject:_pen];
 }
 
-// 画笔-触摸-移动
+/* 画笔-触摸-移动 */
 - (void)touchesMovedPen:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -178,7 +178,7 @@
     [self setNeedsDisplay];
 }
 
-// 画直线-触摸-开始
+/* 画直线-触摸-开始 */
 - (void)touchesBeganLine:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -194,7 +194,7 @@
     [self.graphs addObject:_line];
 }
 
-// 画直线-触摸-移动
+/* 画直线-触摸-移动 */
 - (void)touchesMovedLine:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -208,7 +208,7 @@
     [self setNeedsDisplay];
 }
 
-// 画圆-触摸-开始
+/* 画圆-触摸-开始 */
 - (void)touchesBeganCircular:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -224,7 +224,7 @@
     [self.graphs addObject:_circular];
 }
 
-// 画圆-触摸-移动
+/* 画圆-触摸-移动 */
 - (void)touchesMovedCircular:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -238,7 +238,7 @@
     [self setNeedsDisplay];
 }
 
-// 画矩形-触摸-开始
+/* 画矩形-触摸-开始 */
 - (void)touchesBeganRectangle:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -254,7 +254,7 @@
     [self.graphs addObject:_rectangle];
 }
 
-// 画矩形-触摸-移动
+/* 画矩形-触摸-移动 */
 - (void)touchesMovedRectangle:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // 1.获取手指对应UITouch对象
@@ -268,7 +268,7 @@
     [self setNeedsDisplay];
 }
 
-// 重绘-画笔
+/* 重绘-画笔 */
 - (void)drawPen:(DGPen *)p
 {
     // 设置对象的线条颜色和宽度
@@ -286,7 +286,7 @@
     [p.path stroke];
 }
 
-// 重绘-画直线
+/* 重绘-画直线 */
 - (void)drawLine:(DGLine *)l
 {
     // 设置对象的线条颜色和宽度
@@ -304,7 +304,7 @@
     CGContextStrokePath(_ctx);
 }
 
-// 重绘-画圆
+/* 重绘-画圆 */
 - (void)drawCircular:(DGCircular *)c
 {
     // 设置对象的线条颜色和宽度
@@ -321,7 +321,7 @@
     CGContextStrokePath(_ctx);
 }
 
-// 重绘-画矩形
+/* 重绘-画矩形 */
 - (void)drawRectangle:(DGRectangle *)r
 {
     // 设置对象的线条颜色和宽度
@@ -338,7 +338,7 @@
     CGContextStrokePath(_ctx);
 }
 
-// 清屏
+/* 清屏 */
 - (void)clear
 {
     [_pens removeAllObjects];
@@ -349,7 +349,7 @@
     [self setNeedsDisplay];
 }
 
-// 撤销
+/* 撤销 */
 - (void)back
 {
     [_pens removeLastObject];
@@ -360,7 +360,7 @@
     [self setNeedsDisplay];
 }
 
-// 保存
+/* 保存 */
 -(void)save
 {
     //开始图像绘制上下文
@@ -404,23 +404,19 @@
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 }
 
+/* 保存为图片后执行的方法 */
 - (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
 {
     NSString *msg = nil;
-    if(error)
-    {
-        msg = @"保存失败!";
-    }
-    else
-    {
-        msg = @"保存成功!";
-    }
+    if(error) msg = @"保存失败!";
+    else      msg = @"保存成功!";
+    [self.delegate getCurSavedImage:image];
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
 
 #pragma marks -- UIAlertViewDelegate --
-//AlertView已经消失时执行的事件
+/* AlertView已经消失时执行的事件 */
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [self.delegate afterSave];
