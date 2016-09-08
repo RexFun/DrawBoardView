@@ -16,8 +16,6 @@
 @property (nonatomic,strong)UIToolbar* bbar;
 @property (nonatomic,strong)DrawBoard* drawBoard;
 @property (nonatomic,strong)PopView* popView;
-@property (nonatomic,strong)UIAlertView* saveAlertView;
-@property (nonatomic,strong)UIActivityIndicatorView* activityIndicator;
 
 - (id)initWithTbarItemsSwitch:(NSArray*)tbarItemsSwitch;
 - (id)initWithFrame:(CGRect)frame tbarItemsSwitch:(NSArray*)tbarItemsSwitch;

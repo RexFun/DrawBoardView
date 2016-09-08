@@ -15,7 +15,6 @@
 		715078611CF82A50003E4796 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7150785F1CF82A50003E4796 /* LaunchScreen.storyboard */; };
 		71F8DD501D80FF800042C696 /* DrawBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F8DD361D80FF800042C696 /* DrawBoard.m */; };
 		71F8DD511D80FF800042C696 /* DrawBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F8DD381D80FF800042C696 /* DrawBoardView.m */; };
-		71F8DD521D80FF800042C696 /* DrawToolPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F8DD3A1D80FF800042C696 /* DrawToolPickerView.m */; };
 		71F8DD531D80FF800042C696 /* PopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F8DD3C1D80FF800042C696 /* PopView.m */; };
 		71F8DD541D80FF800042C696 /* UIView+JMNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F8DD401D80FF800042C696 /* UIView+JMNoise.m */; };
 		71F8DD551D80FF800042C696 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 71F8DD421D80FF800042C696 /* close.png */; };
@@ -43,8 +42,6 @@
 		71F8DD361D80FF800042C696 /* DrawBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
 		71F8DD371D80FF800042C696 /* DrawBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoardView.h; sourceTree = "<group>"; };
 		71F8DD381D80FF800042C696 /* DrawBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoardView.m; sourceTree = "<group>"; };
-		71F8DD391D80FF800042C696 /* DrawToolPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawToolPickerView.h; sourceTree = "<group>"; };
-		71F8DD3A1D80FF800042C696 /* DrawToolPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawToolPickerView.m; sourceTree = "<group>"; };
 		71F8DD3B1D80FF800042C696 /* PopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopView.h; sourceTree = "<group>"; };
 		71F8DD3C1D80FF800042C696 /* PopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopView.m; sourceTree = "<group>"; };
 		71F8DD3F1D80FF800042C696 /* UIView+JMNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+JMNoise.h"; sourceTree = "<group>"; };
@@ -135,8 +132,6 @@
 				71F8DD361D80FF800042C696 /* DrawBoard.m */,
 				71F8DD371D80FF800042C696 /* DrawBoardView.h */,
 				71F8DD381D80FF800042C696 /* DrawBoardView.m */,
-				71F8DD391D80FF800042C696 /* DrawToolPickerView.h */,
-				71F8DD3A1D80FF800042C696 /* DrawToolPickerView.m */,
 				71F8DD3B1D80FF800042C696 /* PopView.h */,
 				71F8DD3C1D80FF800042C696 /* PopView.m */,
 			);
@@ -280,7 +275,6 @@
 				71F8DD531D80FF800042C696 /* PopView.m in Sources */,
 				715078561CF82A50003E4796 /* AppDelegate.m in Sources */,
 				715078531CF82A50003E4796 /* main.m in Sources */,
-				71F8DD521D80FF800042C696 /* DrawToolPickerView.m in Sources */,
 				71F8DD5B1D80FF800042C696 /* UARoundedRectView.m in Sources */,
 				71F8DD501D80FF800042C696 /* DrawBoard.m in Sources */,
 			);

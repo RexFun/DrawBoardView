@@ -60,6 +60,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+//- (void)digitSignTap
+//{
+//    NSLog(@"显示画板...");
+//    // 二次点击时，不需重新实例化UIViewController，保留上次选过的记录
+//    if (self.containerVC == nil) {
+//        NSLog(@"it's nil!");
+//        self.drawBoardView                      = [[DrawBoardView alloc] init];
+//        self.drawBoardView.drawBoard.delegate   = self;
+//        self.containerVC                        = [[UIViewController alloc]init];
+//        self.containerVC.view                   = self.drawBoardView;
+//        self.containerVC.modalPresentationStyle = UIModalPresentationPopover;
+//    } else {
+//        NSLog(@"it's not nil!");
+//    }
+//    
+//    self.popoverPC            = self.containerVC.popoverPresentationController;
+//    self.popoverPC.delegate   = self;
+//    self.popoverPC.sourceView = self.btn;
+//    self.popoverPC.sourceRect = self.btn.bounds;
+//    self.popoverPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+//    [self presentViewController:self.containerVC animated:YES completion:nil];
+//}
+
 - (void)digitSignTap
 {
     NSLog(@"显示画板...");
@@ -103,12 +126,22 @@
 }
 
 #pragma mark - 画板代理
+//- (void) afterSave
+//{
+//    NSLog(@"点击保存后清屏...");
+//    [self.containerVC dismissViewControllerAnimated:YES completion:nil];
+//}
 - (void) afterSave
 {
     NSLog(@"点击保存后清屏...");
     [self.drawBoardWindow.drawBoardView clearTap];
     [self.drawBoardWindow hide];
 }
+
+//- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller
+//{
+//    return UIModalPresentationNone;
+//}
 
 #pragma mark - 弹出框代理
 - (void)willShowModalPanel:(UAModalPanel *)modalPanel

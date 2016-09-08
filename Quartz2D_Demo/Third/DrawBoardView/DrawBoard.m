@@ -409,11 +409,11 @@
     NSString *msg = nil;
     if(error)
     {
-        msg = @"图片保存失败!";
+        msg = @"保存失败!";
     }
     else
     {
-        msg = @"图片保存成功!";
+        msg = @"保存成功!";
     }
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
