@@ -51,7 +51,7 @@
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1
-                                                           constant:100]];
+                                                           constant:50]];
     
     //图像
     self.imgView = [[UIImageView alloc] init];
@@ -70,15 +70,15 @@
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeWidth
-                                                         multiplier:0.5
+                                                         multiplier:0.8
                                                            constant:0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.imgView
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeHeight
-                                                         multiplier:0.5
-                                                           constant:0]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.imgView
+//                                                          attribute:NSLayoutAttributeHeight
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeHeight
+//                                                         multiplier:0.7
+//                                                           constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.imgView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
@@ -93,6 +93,13 @@
                                                           attribute:NSLayoutAttributeBottom
                                                          multiplier:1
                                                            constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.imgView
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1
+                                                           constant:-20]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,11 +154,11 @@
 - (void) afterSavedImage:(UIImage*)image
 {
     NSLog(@"点击保存后...");
-    [[[UIAlertView alloc]initWithTitle:@"保存成功！"
-                               message:nil
-                              delegate:nil
-                     cancelButtonTitle:@"OK"
-                     otherButtonTitles:nil] show];
+//    [[[UIAlertView alloc]initWithTitle:@"保存成功！"
+//                               message:nil
+//                              delegate:nil
+//                     cancelButtonTitle:@"OK"
+//                     otherButtonTitles:nil] show];
     [self.imgView setImage:image];
     [self.drawBoardWindow hide];
 }
