@@ -360,8 +360,8 @@
     [self setNeedsDisplay];
 }
 
-/* 保存 */
--(void)save
+/* 截图 */
+-(UIImage*)screenShot
 {
     //开始图像绘制上下文
     UIGraphicsBeginImageContext(self.bounds.size);
@@ -400,25 +400,43 @@
     //结束图像绘制上下文
     UIGraphicsEndImageContext();
     
-    //保存图片
-    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    return image;
 }
 
-/* 保存为图片后执行的方法 */
-- (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+/* 保存 */
+- (void)save
 {
-    NSString *msg = nil;
-    if(error) msg = @"保存失败!";
-    else      msg = @"保存成功!";
-    [self.delegate getCurSavedImage:image];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+    UIAlertView* waitingAlertView = [[UIAlertView alloc] initWithTitle:@"请等待..." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [waitingAlertView show];
+    
+    __block UIImage *image = nil;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // 处理耗时操作的代码块...
+        image = [self screenShot];
+        // 通知主线程刷新
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // 回调或者说是通知主线程刷新
+            // 保存至相册
+//            UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+            // 关闭弹窗
+            [waitingAlertView dismissWithClickedButtonIndex:nil animated:YES];
+            // 画板清屏
+            [self clear];
+            // 执行代理方法
+            [self.delegate afterSavedImage:image];
+        });
+    });
 }
 
-#pragma marks -- UIAlertViewDelegate --
-/* AlertView已经消失时执行的事件 */
--(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    [self.delegate afterSave];
-}
+/* 保存至相册后执行的方法 */
+//- (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+//{
+//    NSString *msg = nil;
+//    if(error) msg = @"保存失败!";
+//    else      msg = @"保存成功!";
+//    [self.delegate getCurSavedImage:image];
+//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    [alert show];
+//}
+
 @end

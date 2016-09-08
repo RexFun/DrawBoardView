@@ -144,15 +144,16 @@
 }
 
 #pragma mark - 画板代理
-- (void) afterSave
+- (void) afterSavedImage:(UIImage*)image
 {
-    NSLog(@"点击保存后清屏...");
-    [self.drawBoardWindow.drawBoardView clearTap];
-    [self.drawBoardWindow hide];
-}
-- (void) getCurSavedImage:(UIImage*)image
-{
+    NSLog(@"点击保存后...");
+    [[[UIAlertView alloc]initWithTitle:@"保存成功！"
+                               message:nil
+                              delegate:nil
+                     cancelButtonTitle:@"OK"
+                     otherButtonTitles:nil] show];
     [self.imgView setImage:image];
+    [self.drawBoardWindow hide];
 }
 
 #pragma mark - 弹出框代理

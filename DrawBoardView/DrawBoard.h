@@ -57,8 +57,7 @@ typedef NS_ENUM(uint, DrawType)
 /* 画板代理 */
 @protocol DrawBoardDelegate<NSObject>
 @optional
-- (void) afterSave;
-- (void) getCurSavedImage:(UIImage*)image;
+- (void) afterSavedImage:(UIImage*)image;
 @end
 /* 画板 */
 @interface DrawBoard : UIView

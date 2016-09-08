@@ -346,22 +346,12 @@
 }
 
 # pragma 实现UIAlertViewDelegate
-/*  */
+/* saveAlertView 按钮点击 */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    UIAlertView* waitingAlertView = [[UIAlertView alloc] initWithTitle:@"请等待..." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
-    
-    if (buttonIndex == 1) {
-        [waitingAlertView show];
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            // 处理耗时操作的代码块...
-            [_drawBoard save];
-            //通知主线程刷新
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //回调或者说是通知主线程刷新，
-                [waitingAlertView dismissWithClickedButtonIndex:nil animated:YES];
-            });
-        });
+    if (buttonIndex == 1)
+    {
+        [_drawBoard save];
     }
 }
 @end
