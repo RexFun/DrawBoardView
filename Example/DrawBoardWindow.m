@@ -30,8 +30,14 @@
 - (void) initSubViews:(CGRect)frame
 {
     // 设置 UAModelPanel 内外边距
+//    self.outerMarginH = 200;
     self.outerMarginV = 30;
-    self.innerMargin = 10;
+    self.innerMargin = 1;
+    self.cornerRadius = 5;
+    [self setTitleBarHeight:35];
+    self.roundedRect.backgroundColor = [UIColor colorWithWhite:.95 alpha:1.00f];
+    [self.headerLabel setText:@"签名手写板"];
+    [self.headerLabel setTextColor:[UIColor whiteColor]];
     // 初始化drawBoardView
     // 初始化方式1
 //    self.drawBoardView = [[DrawBoardView alloc] init];
