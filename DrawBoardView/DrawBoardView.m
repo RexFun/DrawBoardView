@@ -49,6 +49,11 @@
 // drawSubView
 - (void) drawSubView:(NSArray*)tbarItemsSwitch
 {
+    // 圆角边框
+    self.layer.borderWidth = 1.0F;
+    self.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.layer.cornerRadius = 5;
+    // 创建元素
     NSMutableArray *tbarItems = [NSMutableArray array];
     // tbar
     if(tbarItemsSwitch != nil)
@@ -142,7 +147,7 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1
-                                                      constant:30]];
+                                                      constant:0]];
     
     // bbar
     NSMutableArray *bbarItems = [NSMutableArray array];
