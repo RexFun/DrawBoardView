@@ -28,7 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7150784E1CF82A50003E4796 /* Quartz2D_Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quartz2D_Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7150784E1CF82A50003E4796 /* DrawBoardView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrawBoardView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		715078521CF82A50003E4796 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		715078541CF82A50003E4796 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		715078551CF82A50003E4796 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -76,7 +76,9 @@
 		715078451CF82A50003E4796 = {
 			isa = PBXGroup;
 			children = (
-				715078501CF82A50003E4796 /* Quartz2D_Demo */,
+				71F8DD341D80FF800042C696 /* DrawBoardView */,
+				71F8DD331D80FF800042C696 /* Third */,
+				715078501CF82A50003E4796 /* Example */,
 				7150784F1CF82A50003E4796 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -84,15 +86,14 @@
 		7150784F1CF82A50003E4796 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7150784E1CF82A50003E4796 /* Quartz2D_Demo.app */,
+				7150784E1CF82A50003E4796 /* DrawBoardView.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		715078501CF82A50003E4796 /* Quartz2D_Demo */ = {
+		715078501CF82A50003E4796 /* Example */ = {
 			isa = PBXGroup;
 			children = (
-				71F8DD331D80FF800042C696 /* Third */,
 				715078541CF82A50003E4796 /* AppDelegate.h */,
 				715078551CF82A50003E4796 /* AppDelegate.m */,
 				715078571CF82A50003E4796 /* ViewController.h */,
@@ -105,7 +106,7 @@
 				715078621CF82A50003E4796 /* Info.plist */,
 				715078511CF82A50003E4796 /* Supporting Files */,
 			);
-			path = Quartz2D_Demo;
+			path = Example;
 			sourceTree = "<group>";
 		};
 		715078511CF82A50003E4796 /* Supporting Files */ = {
@@ -119,7 +120,6 @@
 		71F8DD331D80FF800042C696 /* Third */ = {
 			isa = PBXGroup;
 			children = (
-				71F8DD341D80FF800042C696 /* DrawBoardView */,
 				71F8DD3D1D80FF800042C696 /* UAModalPanel */,
 			);
 			path = Third;
@@ -194,9 +194,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7150784D1CF82A50003E4796 /* Quartz2D_Demo */ = {
+		7150784D1CF82A50003E4796 /* DrawBoardView */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 715078651CF82A50003E4796 /* Build configuration list for PBXNativeTarget "Quartz2D_Demo" */;
+			buildConfigurationList = 715078651CF82A50003E4796 /* Build configuration list for PBXNativeTarget "DrawBoardView" */;
 			buildPhases = (
 				7150784A1CF82A50003E4796 /* Sources */,
 				7150784B1CF82A50003E4796 /* Frameworks */,
@@ -206,9 +206,9 @@
 			);
 			dependencies = (
 			);
-			name = Quartz2D_Demo;
+			name = DrawBoardView;
 			productName = Quartz2D_Demo;
-			productReference = 7150784E1CF82A50003E4796 /* Quartz2D_Demo.app */;
+			productReference = 7150784E1CF82A50003E4796 /* DrawBoardView.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -226,7 +226,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 715078491CF82A50003E4796 /* Build configuration list for PBXProject "Quartz2D_Demo" */;
+			buildConfigurationList = 715078491CF82A50003E4796 /* Build configuration list for PBXProject "DrawBoardView" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -239,7 +239,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7150784D1CF82A50003E4796 /* Quartz2D_Demo */,
+				7150784D1CF82A50003E4796 /* DrawBoardView */,
 			);
 		};
 /* End PBXProject section */
@@ -392,11 +392,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = Quartz2D_Demo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "ole.Quartz2D-Demo";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = rexfun.DrawBoardView;
+				PRODUCT_NAME = DrawBoardView;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -407,11 +407,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = Quartz2D_Demo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "ole.Quartz2D-Demo";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = rexfun.DrawBoardView;
+				PRODUCT_NAME = DrawBoardView;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -419,7 +419,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		715078491CF82A50003E4796 /* Build configuration list for PBXProject "Quartz2D_Demo" */ = {
+		715078491CF82A50003E4796 /* Build configuration list for PBXProject "DrawBoardView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				715078631CF82A50003E4796 /* Debug */,
@@ -428,7 +428,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		715078651CF82A50003E4796 /* Build configuration list for PBXNativeTarget "Quartz2D_Demo" */ = {
+		715078651CF82A50003E4796 /* Build configuration list for PBXNativeTarget "DrawBoardView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				715078661CF82A50003E4796 /* Debug */,
